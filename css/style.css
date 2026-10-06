@@ -445,6 +445,13 @@ a.fx-name:hover { color: var(--mint); text-decoration: none; }
   border-radius: 14px;
   -webkit-overflow-scrolling: touch;
 }
+/* on the home page the tree may be wider than the rest of the page, so the boxes have room for names */
+#home-bracket {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1360px, calc(100vw - 32px));
+}
 .bracket { position: relative; margin: 0 auto; }
 .bk-lines { position: absolute; left: 0; top: 0; }
 .bk-lines path { fill: none; stroke: rgba(255, 255, 255, 0.3); stroke-width: 1.5; }
@@ -484,12 +491,23 @@ a.fx-name:hover { color: var(--mint); text-decoration: none; }
 }
 .bk-row + .bk-row { border-top: 1px solid var(--line); }
 a.bk-row:hover { background: var(--card); text-decoration: none; }
-.bk-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* a long team name runs onto a second line; only a third line is cut off */
+.bk-name {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  line-height: 1.2;
+}
 .bk-score { flex: none; font-weight: 700; }
 .bk-score small { font-weight: 400; color: var(--muted); }
 .bk-row.win { color: var(--mint); font-weight: 700; }
 .bk-row.lose { color: var(--muted); }
 @media (min-width: 601px) { #home-bracket .bk-row { font-size: 0.95rem; } }   /* bigger boxes on the home page, so bigger names */
+.bk-trophy { position: absolute; overflow: hidden; pointer-events: none; }
+.bk-trophy img { position: absolute; display: block; max-width: none; }
 .bk-champion {
   position: absolute;
   text-align: center;

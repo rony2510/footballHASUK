@@ -98,7 +98,8 @@ var Bracket = (function () {
 
   /* ---------- drawing the tree ----------
      options: name(teamId) -> text, href(teamId) -> link (optional),
-              onPick(matchId) (optional, makes the boxes clickable), selected (match id) */
+              onPick(matchId) (optional, makes the boxes clickable), selected (match id),
+              boxHeight / boxGap (optional sizes), trophy (optional picture above the final) */
   function render(container, list, options) {
     options = options || {};
     var byId = {};
@@ -106,8 +107,11 @@ var Bracket = (function () {
 
     var style = window.getComputedStyle(container);
     var avail = (container.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight)) || 1000;
-    var gap = avail < 700 ? 14 : 24;
-    var W = Math.max(100, Math.min(160, Math.floor((avail - 6 * gap) / 7)));
+    var gap = avail < 700 ? 12 : 20;
+    // Boxes share the width when there is room. On narrow screens the tree scrolls sideways
+    // anyway, so the boxes are simply made wide enough for names to be read.
+    var fit = Math.floor((avail - 6 * gap) / 7);
+    var W = fit >= 104 ? Math.min(200, fit) : 136;
     var H = options.boxHeight || 68, vgap = options.boxGap || 34, head = 30;   // the home page asks for a taller tree
     var width = 7 * W + 6 * gap;
     var height = head + 4 * H + 3 * vgap;
@@ -201,6 +205,30 @@ var Bracket = (function () {
       }
       box.appendChild(el);
     });
+
+    // a trophy picture above the final box (home page)
+    //   options.trophy = { src, height, crop: [left, top, width, height] }
+    //   crop says which part of the picture holds the trophy, as fractions of the picture,
+    //   so empty space around it is not shown. Use [0, 0, 1, 1] for a picture with no empty border.
+    if (options.trophy && byId.f) {
+      var crop = options.trophy.crop || [0, 0, 1, 1];
+      var room = pos.f.y - head - 16;                          // space between the round names and the final box
+      var shown = Math.min(options.trophy.height || 170, room);
+      if (shown >= 40) {
+        var full = shown / crop[3];                            // size of the whole (square) picture on screen
+        var frame = document.createElement("div");
+        frame.className = "bk-trophy";
+        frame.style.width = crop[2] * full + "px"; frame.style.height = shown + "px";
+        frame.style.left = pos.f.x + W / 2 - crop[2] * full / 2 + "px";
+        frame.style.top = pos.f.y - 12 - shown + "px";
+        var picture = document.createElement("img");
+        picture.src = options.trophy.src; picture.alt = "";
+        picture.style.width = picture.style.height = full + "px";
+        picture.style.left = -crop[0] * full + "px"; picture.style.top = -crop[1] * full + "px";
+        frame.appendChild(picture);
+        box.appendChild(frame);
+      }
+    }
 
     // champion under the final
     var final = byId.f;

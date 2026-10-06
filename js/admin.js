@@ -206,19 +206,64 @@
   }
 
   /* ---------- drawing ---------- */
+  var PANELS = { teams: "Teams", results: "Results", views: "Page views" };
+
   function draw() {
-    Object.keys(docs).forEach(function (key) {
+    Object.keys(PANELS).forEach(function (key) {
       $("panel-" + key).hidden = key !== active;
       var button = document.querySelector('.dash-menu [data-panel="' + key + '"]');
       button.classList.toggle("active", key === active);
-      button.classList.toggle("unsaved", isDirty(docs[key]));
+      button.classList.toggle("unsaved", !!docs[key] && isDirty(docs[key]));
     });
-    $("dash-title").textContent = active === "teams" ? "Teams" : "Results";
-    var dirty = isDirty(docs[active]);
+    $("dash-title").textContent = PANELS[active];
+    var doc = docs[active];                       // "Page views" has nothing to save
+    $("dash-actions").hidden = !doc;
+    var dirty = !!doc && isDirty(doc);
     $("save").disabled = !dirty;
     $("discard").disabled = !dirty;
-    if (!docs[active].loaded) return;
+    if (!doc || !doc.loaded) return;
     if (active === "teams") drawTeams(); else drawResults();
+  }
+
+  /* ---------- Page views ----------
+     Every page of the website adds one to its own counter when it is opened (see countView
+     in main.js). Here the counters are read back from the counting service. */
+  var VIEW_PAGES = [
+    ["home", "Home"], ["teams", "Teams"], ["team", "Team pages (all teams)"], ["results", "Results"],
+    ["fixtures", "Fixtures"], ["statistics", "Statistics"], ["about", "About"]
+  ];
+
+  async function loadViews() {
+    var views = typeof SITE !== "undefined" ? SITE.views : null;
+    if (!views || !views.api) return msg("dash-msg", "Page-view counting is switched off (see \"views\" in js/data.js).", "error");
+
+    $("views-refresh").disabled = true;
+    msg("dash-msg", "Loading page views…");
+    var counts;
+    try {
+      counts = await Promise.all(VIEW_PAGES.map(function (p) {
+        return fetch(views.api + "/get/" + views.namespace + "/" + p[0], { cache: "no-store" }).then(function (res) {
+          if (res.status === 404) return 0;                       // nobody has opened that page yet
+          if (!res.ok) throw new Error("status " + res.status);
+          return res.json().then(function (data) { return Number(data.value) || 0; });
+        });
+      }));
+    } catch (e) {
+      $("views-refresh").disabled = false;
+      return msg("dash-msg", "Could not load the page views. The counting service may be busy – press Refresh in a moment.", "error");
+    }
+
+    var body = $("views-body"), total = 0;
+    body.textContent = "";
+    VIEW_PAGES.forEach(function (p, i) {
+      var tr = body.insertRow();
+      tr.insertCell().textContent = p[1];
+      tr.insertCell().textContent = counts[i].toLocaleString("en-GB");
+      total += counts[i];
+    });
+    $("views-total").textContent = total.toLocaleString("en-GB");
+    $("views-refresh").disabled = false;
+    if (active === "views") msg("dash-msg", "");
   }
 
   /* ---------- Teams ---------- */
@@ -687,6 +732,7 @@
       msg("dash-msg", "");
       draw();                                   // the panel must be visible before the tree is measured
       if (active === "results" && docs.results.loaded) { fillMatchEditor(); draw(); }
+      if (active === "views") loadViews();
     });
   });
 
@@ -696,6 +742,7 @@
   $("m-editor").addEventListener("submit", function (e) { e.preventDefault(); });
   $("f-add").addEventListener("click", addPlayer);
   $("m-clear").addEventListener("click", clearResult);
+  $("views-refresh").addEventListener("click", loadViews);
   $("save").addEventListener("click", save);
   $("discard").addEventListener("click", discard);
 

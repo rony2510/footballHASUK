@@ -11,7 +11,12 @@ const SITE = {
   // shown in the footer and on the About page
   address: "হাজং স্টুডেন্ট কাউন্সিল (হাসুক)",
   email: "",   // optional, e.g. "info@example.com"
-  phone: ""    // optional
+  phone: "",   // optional
+
+  // Page-view counting (shown in the admin panel under "Page views").
+  // Each page tells this free public counting service "one more view" when it is opened.
+  // Set api to "" to switch counting off.
+  views: { api: "https://abacus.jasoncameron.dev", namespace: "hasuk-football-2026" }
 };
 
 // Teams and matches are not in this file: they live in data/teams.js and

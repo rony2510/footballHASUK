@@ -65,12 +65,13 @@
         <nav class="dash-menu" aria-label="Admin sections">
           <button class="active" type="button" data-panel="teams">Teams</button>
           <button type="button" data-panel="results">Results</button>
+          <button type="button" data-panel="views">Page views</button>
         </nav>
 
         <div class="dash-body">
           <div class="dash-head">
             <h1 id="dash-title">Teams</h1>
-            <div class="dash-actions">
+            <div class="dash-actions" id="dash-actions">
               <button class="btn small outline" id="discard" type="button" disabled>Discard</button>
               <button class="btn small" id="save" type="button" disabled>Save to website</button>
             </div>
@@ -193,12 +194,26 @@
               <button class="btn small outline" id="m-clear" type="button">Clear result</button>
             </form>
           </div>
+
+          <!-- Page views: how many times each page of the website has been opened -->
+          <div id="panel-views" hidden>
+            <div class="table-wrap views">
+              <table>
+                <thead><tr><th>Page</th><th>Views</th></tr></thead>
+                <tbody id="views-body"></tbody>
+                <tfoot><tr><th>Total</th><th id="views-total">–</th></tr></tfoot>
+              </table>
+            </div>
+            <p class="muted small" id="views-note">A view is counted every time a page is opened, so one visitor opening three pages counts as three.</p>
+            <button class="btn small outline" id="views-refresh" type="button">Refresh</button>
+          </div>
         </div>
       </section>
 
     </div>
   </main>
 
+  <script src="js/data.js"></script>
   <script src="js/bracket.js"></script>
   <script src="js/admin-config.js"></script>
   <script src="js/admin.js"></script>

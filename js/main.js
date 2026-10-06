@@ -197,6 +197,9 @@
       Bracket.render(el, MATCHES, {
         name: teamName,
         boxHeight: 84, boxGap: 52,          // taller than the admin panel's tree
+        // trophy.png (in the site's main folder) shown above the final. "crop" is the part of
+        // the picture that holds the trophy: [left, top, width, height] as fractions of the picture.
+        trophy: { src: "trophy.png", height: 145, crop: [0.3613, 0.1465, 0.2783, 0.707] },
         href: function (id) { return "team.html?id=" + encodeURIComponent(id); }
       });
     }
@@ -410,6 +413,22 @@
     if (pages[page]) pages[page]();
   }
 
+  /* ---------- Page views ----------
+     Adds one to this page's counter. Nothing about the visitor is sent or stored, only
+     "this page was opened". Previews on your own computer are not counted. */
+  function countView() {
+    var views = SITE.views;
+    var pages = ["home", "teams", "team", "results", "fixtures", "statistics", "about"];
+    if (!views || !views.api || pages.indexOf(page) < 0) return;
+    var host = location.hostname;
+    if (location.protocol === "file:" || !host || host === "localhost" || host === "127.0.0.1") return;
+    try {
+      fetch(views.api + "/hit/" + views.namespace + "/" + page, { cache: "no-store", keepalive: true })
+        .catch(function () { /* counting must never break the page */ });
+    } catch (e) { /* very old browser: no counting */ }
+  }
+
   layout();
   loadData(render);
+  countView();
 })();
