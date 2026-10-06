@@ -13,7 +13,16 @@ window.TEAMS = [
     "name": "Team Barcelona",
     "short": "",
     "group": "A",
-    "players": [],
+    "players": [
+      {
+        "name": "Lamine Yamal",
+        "jersey": "10",
+        "position": "Forward",
+        "goals": 1,
+        "yellow": 0,
+        "red": 0
+      }
+    ],
     "manager": "",
     "address": ""
   },
