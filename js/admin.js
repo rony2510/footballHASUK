@@ -352,6 +352,7 @@
     s.homeGoals = s.awayGoals = s.homePens = s.awayPens = null;
     s.scorers = [];
     delete s["for"];
+    delete s.done;
   }
 
   function drawResults() {
@@ -410,6 +411,7 @@
     $("m-ap").value = numberText(s.awayPens);
     $("m-hs").value = m.home ? scorerLines(s, m.home) : "";
     $("m-as").value = m.away ? scorerLines(s, m.away) : "";
+    $("m-done").checked = s.done === true;
     updateMatchForm();
   }
 
@@ -431,6 +433,10 @@
     $("m-note").textContent = !m.ready
       ? "The result can be entered once both teams are known."
       : level ? "Level score: enter the penalty shoot-out result to decide the winner." : "";
+    // "done" can only be ticked once both scores are in
+    var scored = m.ready && typeof s.homeGoals === "number" && typeof s.awayGoals === "number";
+    $("m-done").disabled = !scored;
+    if (!scored) $("m-done").checked = false;
     $("m-clear").disabled = !(typeof s.homeGoals === "number" || typeof s.awayGoals === "number" || (s.scorers || []).length);
   }
 
@@ -488,6 +494,7 @@
       s.scorers = parseScorers($("m-hs").value, m.home).concat(parseScorers($("m-as").value, m.away));
       // remember which two teams this result belongs to (see Bracket.resolve)
       if (hasResult(s)) s["for"] = Bracket.pairKey(m); else delete s["for"];
+      if ($("m-done").checked && s.homeGoals !== null && s.awayGoals !== null) s.done = true; else delete s.done;
     }
 
     updateMatchForm();

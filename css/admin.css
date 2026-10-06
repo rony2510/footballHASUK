@@ -38,7 +38,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--mint); outl
 
 /* ---------- Dashboard ---------- */
 .dash { display: grid; grid-template-columns: 190px 1fr; gap: 24px; align-items: start; }
-.dash-menu { display: flex; flex-direction: column; gap: 4px; position: sticky; top: 84px; }
+.dash-menu { display: flex; flex-direction: column; gap: 4px; position: sticky; top: 104px; }
 .dash-menu button {
   background: transparent;
   border: 0;
@@ -72,6 +72,10 @@ button.team-tile { cursor: pointer; font-family: inherit; font-size: clamp(0.78r
 .editor .btn { margin-top: 14px; }
 input:disabled, select:disabled, textarea:disabled { opacity: 0.55; cursor: not-allowed; }
 #m-note { margin-top: 10px; }
+label.check { display: flex; align-items: center; gap: 10px; margin: 18px 0 0; color: var(--text); font-size: 1rem; cursor: pointer; }
+label.check input { width: 22px; height: 22px; flex: none; padding: 0; accent-color: var(--green); cursor: pointer; }
+label.check small { color: var(--muted); }
+label.check:has(input:disabled) { opacity: 0.55; cursor: not-allowed; }
 
 /* players table inside the team form */
 .players-edit { background: transparent; }

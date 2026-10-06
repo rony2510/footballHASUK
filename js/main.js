@@ -41,8 +41,8 @@
     var contact = [SITE.address, SITE.email, SITE.phone].filter(Boolean).map(esc).join(" · ");
     fill("site-footer",
       '<footer class="footer"><div class="container">' +
-        "<div>© " + esc(SITE.year) + " <strong>" + esc(SITE.title) + "</strong>. All rights reserved.</div>" +
-        "<div><strong>Address:</strong> " + contact + "</div>" +
+        '<div class="footer-address"><strong>Address:</strong> ' + contact + "</div>" +
+        '<div class="footer-copy">© ' + esc(SITE.year) + " <strong>" + esc(SITE.title) + "</strong>. All rights reserved.</div>" +
       "</div></footer>");
 
     var btn = $("menu-btn"), nav = $("nav");
@@ -98,12 +98,22 @@
     var played = MATCHES.filter(function (m) { return m.played; }).sort(byDateAsc).reverse();   // newest first
     var upcoming = MATCHES.filter(function (m) { return !m.played; }).sort(byDateAsc);
 
-    function niceDate(m) {
-      if (!m.date) return m.time || "";
+    // "2026-10-17" -> "Sat, 17 Oct 2026"
+    function justDate(m) {
+      if (!m.date) return "";
       var p = m.date.split("-");
       var d = new Date(+p[0], +p[1] - 1, +p[2]);
-      var s = d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
-      return m.time ? s + " · " + m.time : s;
+      return d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
+    }
+    // "14:30" -> "2:30 PM"
+    function niceTime(t) {
+      var p = /^(\d{1,2}):(\d{2})/.exec(t || "");
+      if (!p) return t || "";
+      var h = +p[1];
+      return ((h + 11) % 12 + 1) + ":" + p[2] + (h < 12 ? " AM" : " PM");
+    }
+    function niceDate(m) {
+      return [justDate(m), niceTime(m.time)].filter(Boolean).join(" · ");
     }
 
     function side(m, slot) {
@@ -265,8 +275,67 @@
         fill("results-list", matchList(played, "No results yet. Check back after the first match."));
       },
 
+      // Every match, one block per stage, with buttons to show a single stage.
+      // A match with a result shows its score; one marked "done" in the admin panel turns green.
       fixtures: function () {
-        fill("fixtures-list", matchList(upcoming, "No upcoming matches."));
+        var STAGES = ["r16", "qf", "sf", "final"];
+        var shown = "all";
+
+        function teamSide(m, slot) {
+          var id = slot === 0 ? m.home : m.away;
+          var name = id
+            ? '<a class="fx-name" href="team.html?id=' + encodeURIComponent(id) + '">' + esc(teamName(id)) + "</a>"
+            : '<span class="fx-name tbd">' + esc(Bracket.waitingFor(m, slot)) + "</span>";
+          var crest = '<span class="fx-crest' + (id ? "" : " tbd") + '">' + (id ? esc(team(id).short || "") : "?") + "</span>";
+          return '<div class="fx-team ' + (slot === 0 ? "home" : "away") + '">' + (slot === 0 ? name + crest : crest + name) + "</div>";
+        }
+
+        function card(m) {
+          var d = justDate(m), t = niceTime(m.time);
+          var meta = !d && !t && !m.venue
+            ? '<span class="tba">Date, time and venue to be announced</span>'
+            : "<span>📅 " + (d ? esc(d) : '<em class="tba">Date to be announced</em>') + "</span>" +
+              "<span>🕒 " + (t ? esc(t) : '<em class="tba">Time to be announced</em>') + "</span>" +
+              "<span>📍 " + (m.venue ? esc(m.venue) : '<em class="tba">Venue to be announced</em>') + "</span>";
+          var middle = '<span class="fx-vs">VS</span>';
+          if (m.played) {
+            middle = '<span class="fx-score">' + esc(m.homeGoals) + " – " + esc(m.awayGoals) +
+              (m.homePens !== null && m.awayPens !== null ? "<small>Pens " + esc(m.homePens) + " – " + esc(m.awayPens) + "</small>" : "") + "</span>";
+          }
+          return '<article class="fx-card' + (m.done ? " done" : "") + '">' +
+            '<div class="fx-top"><span class="fx-stage">' + esc(m.roundName) + '</span><span class="fx-no">Match ' + m.no +
+              (m.done ? ' · <span class="fx-done">✓ Done</span>' : "") + "</span></div>" +
+            '<div class="fx-teams">' + teamSide(m, 0) + middle + teamSide(m, 1) + "</div>" +
+            '<div class="fx-meta">' + meta + "</div></article>";
+        }
+
+        function draw() {
+          var all = MATCHES.slice().sort(byDateAsc);
+          var stages = STAGES.filter(function (st) { return all.some(function (m) { return m.round === st; }); });
+          if (stages.indexOf(shown) < 0) shown = "all";
+
+          fill("fixture-filters", [["all", "All"]].concat(stages.map(function (st) { return [st, Bracket.ROUND_NAMES[st]]; }))
+            .map(function (f) {
+              return '<button type="button" class="pill' + (f[0] === shown ? " active" : "") + '" data-stage="' + f[0] +
+                '" aria-pressed="' + (f[0] === shown) + '">' + esc(f[1]) + "</button>";
+            }).join(""));
+
+          fill("fixtures-list", stages.filter(function (st) { return shown === "all" || shown === st; }).map(function (st) {
+            var list = all.filter(function (m) { return m.round === st; });
+            return '<section class="fx-stage-block"><div class="fx-head"><h2>' + esc(Bracket.ROUND_NAMES[st]) + "</h2>" +
+              '<span class="fx-count">' + list.length + (list.length === 1 ? " match" : " matches") + "</span></div>" +
+              '<div class="fx-list">' + list.map(card).join("") + "</div></section>";
+          }).join("") || '<div class="card empty">No matches yet.</div>');
+        }
+
+        var filters = $("fixture-filters");
+        if (filters) filters.addEventListener("click", function (e) {
+          var b = e.target.closest ? e.target.closest("[data-stage]") : null;
+          if (!b) return;
+          shown = b.getAttribute("data-stage");
+          draw();
+        });
+        draw();
       },
 
       statistics: function () {

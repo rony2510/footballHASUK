@@ -8,8 +8,8 @@ const SITE = {
   title: "মঙ্গল সরকার স্মৃতি জাতীয় হাজং ফুটবল টুর্নামেন্ট ২০২৬",
   tagline: "National Hajong Football Tournament in memory of Mangal Sarkar",
   year: 2026,
-  // TODO: put the real address / contact here (shown in the footer and About page)
-  address: "Your address here, Bangladesh",
+  // shown in the footer and on the About page
+  address: "হাজং স্টুডেন্ট কাউন্সিল (হাসুক)",
   email: "",   // optional, e.g. "info@example.com"
   phone: ""    // optional
 };
