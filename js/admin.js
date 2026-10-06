@@ -413,7 +413,6 @@
     $("m-ap").value = numberText(s.awayPens);
     $("m-hs").value = m.home ? scorerLines(s, m.home) : "";
     $("m-as").value = m.away ? scorerLines(s, m.away) : "";
-    $("m-done").checked = s.done === true;
 
     // player of the match: name (with the two squads as suggestions) + which of the two teams
     $("m-potm").value = s.potm ? s.potm.player : "";
@@ -453,10 +452,6 @@
     $("m-note").textContent = !m.ready
       ? "The result can be entered once both teams are known."
       : level ? "Level score: enter the penalty shoot-out result to decide the winner." : "";
-    // "done" can only be ticked once both scores are in
-    var scored = m.ready && typeof s.homeGoals === "number" && typeof s.awayGoals === "number";
-    $("m-done").disabled = !scored;
-    if (!scored) $("m-done").checked = false;
     $("m-clear").disabled = !(typeof s.homeGoals === "number" || typeof s.awayGoals === "number" || (s.scorers || []).length || s.potm);
   }
 
@@ -526,7 +521,7 @@
       } else delete s.potm;
       // remember which two teams this result belongs to (see Bracket.resolve)
       if (hasResult(s)) s["for"] = Bracket.pairKey(m); else delete s["for"];
-      if ($("m-done").checked && s.homeGoals !== null && s.awayGoals !== null) s.done = true; else delete s.done;
+      delete s.done;       // the old "mark as done" tick box: a match now counts as finished once it has a score
     }
 
     updateMatchForm();

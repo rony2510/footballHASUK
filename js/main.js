@@ -204,7 +204,8 @@
     /* The layout shared by the Fixtures and Results pages: stage buttons, one block per
        stage, one full-width card per match.
        options: filters / list (element ids), matches (in display order),
-                bottom(match) -> html under the two teams, empty (text when there are none) */
+                bottom(match) -> html under the two teams, empty (text when there are none),
+                tintFinished -> green box for matches that have a score */
     function stageBoard(options) {
       var STAGES = ["r16", "qf", "sf", "final"];
       var all = options.matches;
@@ -225,9 +226,10 @@
           middle = '<span class="fx-score">' + esc(m.homeGoals) + " – " + esc(m.awayGoals) +
             (m.homePens !== null && m.awayPens !== null ? "<small>Pens " + esc(m.homePens) + " – " + esc(m.awayPens) + "</small>" : "") + "</span>";
         }
-        return '<article class="fx-card' + (m.done ? " done" : "") + '">' +
+        var finished = options.tintFinished && m.played;      // a match with a score is finished
+        return '<article class="fx-card' + (finished ? " done" : "") + '">' +
           '<div class="fx-top"><span class="fx-stage">' + esc(m.roundName) + '</span><span class="fx-no">Match ' + m.no +
-            (m.done ? ' · <span class="fx-done">✓ Done</span>' : "") + "</span></div>" +
+            (finished ? ' · <span class="fx-done">✓ Done</span>' : "") + "</span></div>" +
           '<div class="fx-teams">' + teamSide(m, 0) + middle + teamSide(m, 1) + "</div>" +
           options.bottom(m) + "</article>";
       }
@@ -354,18 +356,19 @@
                 '<ul class="away">' + away + "</ul></div>"
               : (m.homeGoals + m.awayGoals > 0 ? '<div class="fx-meta"><span class="tba">Scorers not recorded</span></div>' : "");
             var best = m.potm
-              ? '<div class="fx-potm">⭐ Player of the Match : <strong>' + esc(m.potm.player) + "</strong> (" + esc(teamName(m.potm.team)) + ")</div>"
-              : "";
+              ? '<div class="fx-potm">Player of the Match : <strong>' + esc(m.potm.player) + "</strong> (" + esc(teamName(m.potm.team)) + ")</div>"
+              : '<div class="fx-potm">Player of the Match : <span class="tba">TBA</span></div>';     // not chosen yet
             return scorers + best;
           }
         });
       },
 
       // Every match, one block per stage, with buttons to show a single stage.
-      // A match with a result shows its score; one marked "done" in the admin panel turns green.
+      // A match with a result shows its score and its whole box turns green.
       fixtures: function () {
         stageBoard({
           filters: "fixture-filters", list: "fixtures-list",
+          tintFinished: true,                       // finished matches get the green box
           matches: MATCHES.slice().sort(byDateAsc),
           empty: "No matches yet.",
           bottom: function (m) {
