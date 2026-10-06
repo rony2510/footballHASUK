@@ -26,6 +26,15 @@
           <li>📍 স্থান: লেঙ্গুড়া, কলমাকান্দা, নেত্রকোনা</li>
           <li>🏆 আয়োজক: হাজং স্টুডেন্ট কাউন্সিল (হাসুক)</li>
         </ul>
+
+        <!-- Countdown to the first match (the start time is "start" in js/data.js) -->
+        <div class="countdown" id="countdown" role="timer" aria-label="Time until the tournament begins" hidden>
+          <div class="cd-box"><span class="cd-num" id="cd-days">0</span><span class="cd-label">Days</span></div>
+          <div class="cd-box"><span class="cd-num" id="cd-hours">00</span><span class="cd-label">Hours</span></div>
+          <div class="cd-box"><span class="cd-num" id="cd-minutes">00</span><span class="cd-label">Minutes</span></div>
+          <div class="cd-box"><span class="cd-num" id="cd-seconds">00</span><span class="cd-label">Seconds</span></div>
+        </div>
+        <p class="cd-started" id="cd-started" hidden>The tournament has begun!</p>
       </section>
 
       <div class="bracket-scroll" id="home-bracket"></div>

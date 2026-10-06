@@ -8,6 +8,9 @@ const SITE = {
   title: "মঙ্গল সরকার স্মৃতি জাতীয় হাজং ফুটবল টুর্নামেন্ট ২০২৬",
   tagline: "National Hajong Football Tournament in memory of Mangal Sarkar",
   year: 2026,
+  // When the tournament begins: 17 October 2026, 9:00 AM Bangladesh time (+06:00).
+  // The home page counts down to this moment.
+  start: "2026-10-17T09:00:00+06:00",
   // shown in the footer and on the About page
   address: "হাজং স্টুডেন্ট কাউন্সিল (হাসুক)",
   email: "",   // optional, e.g. "info@example.com"

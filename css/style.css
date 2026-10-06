@@ -133,6 +133,26 @@ main { flex: 1; padding: 28px 0 48px; }
   line-height: 1.9;
 }
 .hero p { margin: 0 auto; max-width: 640px; color: var(--mint); font-size: 1.05rem; }
+[hidden] { display: none !important; }
+/* countdown to kick-off */
+.countdown { display: flex; justify-content: center; gap: 14px; margin-top: 48px; }
+.cd-box {
+  width: 108px;
+  padding: 14px 6px 12px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+}
+.cd-num {
+  display: block;
+  color: var(--text);
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;      /* digits keep the same width, so the boxes do not jiggle */
+}
+.cd-label { display: block; margin-top: 4px; color: var(--mint); font-size: 0.74rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+.hero .cd-started { margin-top: 44px; color: var(--green); font-size: 1.3rem; font-weight: 700; }
 .hero .actions { margin-top: 22px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
 
 .btn {
@@ -574,6 +594,11 @@ table.players .brief { display: none; text-decoration: none; }
   .bracket-scroll { margin-bottom: 18px; padding: 12px 8px 14px; }
   .bk-row { padding: 0 6px; font-size: 0.74rem; }
   .hero p { font-size: 1rem; }
+  .countdown { gap: 8px; margin-top: 34px; }
+  .cd-box { width: 25%; max-width: 84px; padding: 10px 2px 9px; border-radius: 14px; }
+  .cd-num { font-size: 1.6rem; }
+  .cd-label { font-size: 0.6rem; letter-spacing: 0.06em; }
+  .hero .cd-started { font-size: 1.1rem; }
   .hero .actions .btn { flex: 1 1 130px; padding: 12px 14px; text-align: center; }
 
   .page-title { font-size: 1.4rem; margin-bottom: 14px; }

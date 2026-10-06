@@ -38,10 +38,8 @@
         '<nav class="nav" id="nav">' + links + "</nav>" +
       "</div></header>");
 
-    var contact = [SITE.address, SITE.email, SITE.phone].filter(Boolean).map(esc).join(" · ");
     fill("site-footer",
       '<footer class="footer"><div class="container">' +
-        '<div class="footer-address"><strong>Address:</strong> ' + contact + "</div>" +
         '<div class="footer-copy">© ' + esc(SITE.year) + " <strong>" + esc(SITE.title) + "</strong>. All rights reserved.</div>" +
       "</div></footer>");
 
@@ -442,7 +440,35 @@
     } catch (e) { /* very old browser: no counting */ }
   }
 
+  /* ---------- Countdown (home page) ----------
+     Days, hours, minutes and seconds until SITE.start. The start is a fixed moment
+     (Bangladesh time), so the countdown is right whatever time zone the visitor is in. */
+  function startCountdown() {
+    var box = $("countdown"), started = $("cd-started");
+    var target = new Date(SITE.start || "").getTime();
+    if (!box || isNaN(target)) return;
+    var two = function (n) { return (n < 10 ? "0" : "") + n; };
+
+    function tick() {
+      var left = Math.floor((target - Date.now()) / 1000);
+      if (left <= 0) {                          // kick-off has passed
+        box.hidden = true;
+        if (started) started.hidden = false;
+        clearInterval(timer);
+        return;
+      }
+      $("cd-days").textContent = Math.floor(left / 86400);
+      $("cd-hours").textContent = two(Math.floor(left % 86400 / 3600));
+      $("cd-minutes").textContent = two(Math.floor(left % 3600 / 60));
+      $("cd-seconds").textContent = two(left % 60);
+      box.hidden = false;
+    }
+    var timer = setInterval(tick, 1000);
+    tick();
+  }
+
   layout();
+  startCountdown();
   loadData(render);
   countView();
 })();
