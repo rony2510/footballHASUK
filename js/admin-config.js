@@ -7,10 +7,19 @@ var ADMIN_REPO = {
   branch: "main"
 };
 
-// The two admin passwords are NOT stored here. Only a salted, one-way
-// PBKDF2-SHA256 hash of them is, so they cannot be read back from this file.
+// The admin passwords are NOT stored here. Each line in "checks" is a salted,
+// one-way PBKDF2-SHA256 hash of one password pair (password 1 + password 2),
+// so the passwords cannot be read back from this file.
+// Any one pair logs in. Delete a line to switch that pair off.
 var ADMIN_AUTH = {
   salt: "Nid+mOJBhIjAdTcxBHojUQ==",
   iterations: 600000,
-  check: "ZWOhJPpZPu0Ie84ulzKWV8KGLm7wd+pM02Ml7ohoCFU="
+  checks: [
+    "ZWOhJPpZPu0Ie84ulzKWV8KGLm7wd+pM02Ml7ohoCFU=", // pair 1
+    "03jUQRSQ0m9tWL//S65f5nQUeemoMxTnWmWjjBqt1K0=", // pair 2
+    "Ci5S4cd/fGqiq8JFi6bGrCQ750cc1BIpxSyWWtD9YbY=", // pair 3
+    "bs4/07AEddMz8z3otAxpf/0GtxTHXudgdbu67Hy8D9M=", // pair 4
+    "NysYiFWSY/3gtVB030VEUDoZGPZnQeilZU0KsVi13bA=", // pair 5
+    "VNwsQkQEqBjztj0srZSzTCjM6UDTpIAnN6LCdm963TA="  // pair 6
+  ]
 };
