@@ -416,6 +416,17 @@ a.fx-name:hover { color: var(--mint); text-decoration: none; }
 .fx-scorers .away { text-align: left; }
 .fx-scorers small { color: var(--muted); }
 .fx-scorers .ball { width: 52px; text-align: center; opacity: 0.8; }
+/* cards row: a small yellow or red card before each name */
+.fx-cards { margin-top: 10px; }
+.card-mark {
+  display: inline-block;
+  width: 10px; height: 14px;
+  margin-right: 7px;
+  border-radius: 2px;
+  vertical-align: -2px;
+}
+.card-mark.yellow { background: #f5c518; }
+.card-mark.red { background: #e5383b; }
 .fx-potm { margin-top: 16px; text-align: center; color: var(--muted); font-size: 1rem; overflow-wrap: anywhere; }
 .fx-potm strong { color: var(--mint); }
 .fx-score {

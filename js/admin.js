@@ -201,7 +201,11 @@
     // always the full set of 15 matches, in bracket order
     var stored = {}, fresh = Bracket.blank(docs.teams.data);
     docs.results.data.forEach(function (m) { if (m && m.id) stored[m.id] = m; });
-    docs.results.data = fresh.map(function (b) { return Object.assign(b, stored[b.id] || {}); });
+    docs.results.data = fresh.map(function (b) {
+      var m = Object.assign(b, stored[b.id] || {});
+      m.scorers = m.scorers || []; m.cards = m.cards || [];
+      return m;
+    });
     docs.results.saved = JSON.stringify(docs.results.data);
     docs.results.loaded = true;
 
@@ -404,11 +408,12 @@
 
   function hasResult(s) {
     return s.homeGoals !== null || s.awayGoals !== null || s.homePens !== null || s.awayPens !== null ||
-      (s.scorers || []).length > 0 || !!s.potm;
+      (s.scorers || []).length > 0 || (s.cards || []).length > 0 || !!s.potm;
   }
   function wipeResult(s) {
     s.homeGoals = s.awayGoals = s.homePens = s.awayPens = null;
     s.scorers = [];
+    s.cards = [];
     delete s["for"];
     delete s.done;
     delete s.potm;
@@ -435,6 +440,14 @@
       return s.player + (s.minute ? " " + s.minute : "");
     }).join("\n");
   }
+
+  function cardLines(m, teamId, type) {
+    return (m.cards || []).filter(function (c) { return c.team === teamId && c.type === type; }).map(function (c) {
+      return c.player + (c.minute ? " " + c.minute : "");
+    }).join("\n");
+  }
+  // the four card boxes: [box id, label id, "home"/"away", card type]
+  var CARD_BOXES = [["m-hy", "l-hy", "home", "yellow"], ["m-ay", "l-ay", "away", "yellow"], ["m-hr", "l-hr", "home", "red"], ["m-ar", "l-ar", "away", "red"]];
 
   // puts the picked match into the form
   function fillMatchEditor() {
@@ -470,6 +483,7 @@
     $("m-ap").value = numberText(s.awayPens);
     $("m-hs").value = m.home ? scorerLines(s, m.home) : "";
     $("m-as").value = m.away ? scorerLines(s, m.away) : "";
+    CARD_BOXES.forEach(function (b) { $(b[0]).value = m[b[2]] ? cardLines(s, m[b[2]], b[3]) : ""; });
 
     // player of the match: name (with the two squads as suggestions) + which of the two teams
     $("m-potm").value = s.potm ? s.potm.player : "";
@@ -502,6 +516,10 @@
     $("l-ap").textContent = "Penalties – " + sideName(m, 1);
     $("l-hs").textContent = "Scorers – " + sideName(m, 0);
     $("l-as").textContent = "Scorers – " + sideName(m, 1);
+    CARD_BOXES.forEach(function (b) {
+      $(b[1]).textContent = (b[3] === "yellow" ? "Yellow cards – " : "Red cards – ") + sideName(m, b[2] === "home" ? 0 : 1);
+      $(b[0]).disabled = !m.ready;
+    });
     ["m-hg", "m-ag", "m-hs", "m-as", "m-potm", "m-potm-team"].forEach(function (id) { $(id).disabled = !m.ready; });
 
     var level = m.ready && typeof s.homeGoals === "number" && s.homeGoals === s.awayGoals;
@@ -509,7 +527,7 @@
     $("m-note").textContent = !m.ready
       ? "The result can be entered once both teams are known."
       : level ? "Level score: enter the penalty shoot-out result to decide the winner." : "";
-    $("m-clear").disabled = !(typeof s.homeGoals === "number" || typeof s.awayGoals === "number" || (s.scorers || []).length || s.potm);
+    $("m-clear").disabled = !(typeof s.homeGoals === "number" || typeof s.awayGoals === "number" || (s.scorers || []).length || (s.cards || []).length || s.potm);
   }
 
   function pickMatch(id) {
@@ -564,6 +582,10 @@
       s.homePens = level ? toNumber($("m-hp").value) : null;
       s.awayPens = level ? toNumber($("m-ap").value) : null;
       s.scorers = parseScorers($("m-hs").value, m.home).concat(parseScorers($("m-as").value, m.away));
+      s.cards = [];
+      CARD_BOXES.forEach(function (b) {                    // same "Name 40" lines as the scorers
+        parseScorers($(b[0]).value, m[b[2]]).forEach(function (c) { c.type = b[3]; s.cards.push(c); });
+      });
       var best = $("m-potm").value.trim();
       if (best) {
         // picking a name from one squad's suggestions also sets that team
@@ -618,6 +640,7 @@
       var m = list[i], s = storedMatch(m.id);
       if ((s.homeGoals === null) !== (s.awayGoals === null)) return "Match " + m.no + ": enter the goals for both teams.";
       if (m.played && !m.winner) return "Match " + m.no + " ended level: enter the penalty shoot-out result (it cannot be a draw).";
+      if ((s.cards || []).length && !m.played) return "Match " + m.no + ": enter the score before the cards.";
       if (s.potm && !m.played) return "Match " + m.no + ": enter the score before the player of the match.";
       if (m.played) {
         var listed = function (id) { return m.scorers.filter(function (x) { return x.team === id; }).length; };

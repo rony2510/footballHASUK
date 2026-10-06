@@ -35,7 +35,7 @@ var Bracket = (function () {
   function blank(teams) {
     teams = teams || [];
     return PLAN.map(function (p, i) {
-      var m = { id: p.id, date: "", time: "", venue: "", homeGoals: null, awayGoals: null, homePens: null, awayPens: null, scorers: [] };
+      var m = { id: p.id, date: "", time: "", venue: "", homeGoals: null, awayGoals: null, homePens: null, awayPens: null, scorers: [], cards: [] };
       if (!p.from) {
         m.home = teams[i * 2] ? teams[i * 2].id : null;
         m.away = teams[i * 2 + 1] ? teams[i * 2 + 1].id : null;
@@ -58,7 +58,7 @@ var Bracket = (function () {
         home: p.from ? done[p.from[0]].winner : (m.home || null),
         away: p.from ? done[p.from[1]].winner : (m.away || null),
         homeGoals: null, awayGoals: null, homePens: null, awayPens: null,
-        scorers: [], potm: null, played: false, done: false, winner: null, loser: null
+        scorers: [], cards: [], potm: null, played: false, done: false, winner: null, loser: null
       };
       r.ready = !!(r.home && r.away);
       // A result is saved together with the two teams it was typed for ("for").
@@ -71,6 +71,8 @@ var Bracket = (function () {
         r.played = true;
         r.homeGoals = hg; r.awayGoals = ag;
         r.scorers = m.scorers || [];
+        // cards shown in this match: { player, team: "<team id>", type: "yellow" | "red", minute }
+        r.cards = (m.cards || []).filter(function (c) { return c && c.player && (c.type === "yellow" || c.type === "red"); });
         if (hg === ag) {                       // level after normal time: penalties decide
           r.homePens = num(m.homePens); r.awayPens = num(m.awayPens);
           if (r.homePens !== null && r.awayPens !== null && r.homePens !== r.awayPens) {

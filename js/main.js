@@ -232,7 +232,7 @@
         var finished = options.tintFinished && m.played;      // a match with a score is finished
         return '<article class="fx-card' + (finished ? " done" : "") + '">' +
           '<div class="fx-top"><span class="fx-stage">' + esc(m.roundName) + '</span><span class="fx-no">Match ' + m.no +
-            (finished ? ' · <span class="fx-done">✓ Done</span>' : "") + "</span></div>" +
+            "</span></div>" +
           '<div class="fx-teams">' + teamSide(m, 0) + middle + teamSide(m, 1) + "</div>" +
           options.bottom(m) + "</article>";
       }
@@ -358,10 +358,24 @@
               ? '<div class="fx-scorers"><ul class="home">' + home + '</ul><span class="ball" aria-hidden="true">⚽</span>' +
                 '<ul class="away">' + away + "</ul></div>"
               : (m.homeGoals + m.awayGoals > 0 ? '<div class="fx-meta"><span class="tba">Scorers not recorded</span></div>' : "");
+            // cards, if any were recorded: each side under its team, yellow first, then red
+            var booked = function (id) {
+              var of = function (type) { return m.cards.filter(function (c) { return c.team === id && c.type === type; }); };
+              return of("yellow").concat(of("red")).map(function (c) {
+                var label = c.type === "yellow" ? "Yellow card" : "Red card";
+                return '<li><span class="card-mark ' + c.type + '" role="img" aria-label="' + label + '" title="' + label + '"></span>' +
+                  esc(c.player) + (c.minute ? " <small>" + esc(c.minute) + "'</small>" : "") + "</li>";
+              }).join("");
+            };
+            var homeCards = booked(m.home), awayCards = booked(m.away);
+            var cards = homeCards || awayCards
+              ? '<div class="fx-scorers fx-cards"><ul class="home">' + homeCards + '</ul><span class="ball" aria-hidden="true"></span>' +
+                '<ul class="away">' + awayCards + "</ul></div>"
+              : "";
             var best = m.potm
               ? '<div class="fx-potm">Player of the Match : <strong>' + esc(m.potm.player) + "</strong> (" + esc(teamName(m.potm.team)) + ")</div>"
               : '<div class="fx-potm">Player of the Match : <span class="tba">TBA</span></div>';     // not chosen yet
-            return scorers + best;
+            return scorers + cards + best;
           }
         });
       },
