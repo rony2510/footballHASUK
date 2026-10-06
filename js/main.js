@@ -194,6 +194,27 @@
       });
     }
 
+    // Fair play ranking: the fewer cards a team has, the higher it stands.
+    // Teams are compared on red cards first, then yellow cards, then the total.
+    // Teams with exactly the same cards share one place (one row of the table).
+    // The numbers come from cardCounts above, so the table follows the cards automatically.
+    function fairPlay() {
+      var perTeam = {};
+      TEAMS.forEach(function (t) { perTeam[t.id] = { red: 0, yellow: 0 }; });
+      ["red", "yellow"].forEach(function (type) {
+        cardCounts(type).forEach(function (r) { if (perTeam[r.team]) perTeam[r.team][type] += r.count; });
+      });
+      var places = {};
+      TEAMS.forEach(function (t) {
+        var c = perTeam[t.id], key = c.red + "|" + c.yellow;
+        places[key] = places[key] || { red: c.red, yellow: c.yellow, total: c.red + c.yellow, teams: [] };
+        places[key].teams.push(t);
+      });
+      return Object.keys(places).map(function (k) { return places[k]; }).sort(function (a, b) {
+        return (a.red - b.red) || (a.yellow - b.yellow) || (a.total - b.total);
+      });
+    }
+
     // one team's record over every match it has played
     function teamRecord(id) {
       var r = { p: 0, w: 0, l: 0, gf: 0, ga: 0 };
@@ -443,6 +464,20 @@
               }).join("") + "</tbody></table></div>"
             : '<div class="card empty">No ' + type + " cards recorded yet.</div>");
         });
+
+        // fair play: one row per place, teams with the same cards together in one box
+        var short = function (full, brief) {
+          return '<th><span class="long">' + full + '</span><abbr class="brief" title="' + full + '">' + brief + "</abbr></th>";
+        };
+        fill("stats-fairplay", TEAMS.length
+          ? '<div class="table-wrap"><table class="fair-play"><thead><tr><th>Rank</th><th>Team</th>' +
+            short("Red Card", "Red") + short("Yellow Card", "Yellow") + short("Total Card", "Total") + "</tr></thead><tbody>" +
+            fairPlay().map(function (place, i) {
+              return "<tr><td>" + (i + 1) + '</td><td><div class="fp-teams">' + place.teams.map(function (tm) {
+                return '<a href="team.html?id=' + encodeURIComponent(tm.id) + '">' + esc(tm.name) + "</a>";
+              }).join("") + "</div></td><td>" + place.red + "</td><td>" + place.yellow + '</td><td class="pts">' + place.total + "</td></tr>";
+            }).join("") + "</tbody></table></div>"
+          : '<div class="card empty">No teams yet.</div>');
       }
     };
 

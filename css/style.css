@@ -563,7 +563,22 @@ table.details th { width: 34%; text-align: left; font-size: 0.93rem; white-space
 table.details td { text-align: left; overflow-wrap: anywhere; }
 table.players td:first-child, table.players th:first-child { text-align: left; padding-left: 14px; font-weight: 600; }
 table.players td:nth-child(2), table.players th:nth-child(2) { text-align: center; }
-table.players .brief { display: none; text-decoration: none; }
+table.players .brief, table.fair-play .brief { display: none; text-decoration: none; }
+/* fair play table: teams that share a place sit together in one box */
+table.fair-play td { vertical-align: middle; }
+table.fair-play th { white-space: nowrap; }
+table.fair-play td:nth-child(2) { width: 100%; }
+table.fair-play td:first-child { font-weight: 700; }
+.fp-teams { display: flex; flex-wrap: wrap; gap: 6px 8px; }
+.fp-teams a {
+  background: var(--bar);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--text);
+  padding: 2px 12px;
+  white-space: nowrap;
+}
+.fp-teams a:hover { border-color: var(--mint); color: var(--mint); text-decoration: none; }
 /* statistics page: yellow / red card tables */
 table.card-stats th .card-mark { vertical-align: -2px; }
 
@@ -650,8 +665,10 @@ table.card-stats th .card-mark { vertical-align: -2px; }
   .fx-meta { flex-direction: column; align-items: center; gap: 4px; font-size: 0.88rem; }
 
   /* six columns fit a phone: short headings (No., YC, RC) and names that wrap */
-  table.players .long { display: none; }
-  table.players .brief { display: inline; }
+  table.players .long, table.fair-play .long { display: none; }
+  table.players .brief, table.fair-play .brief { display: inline; }
+  .fp-teams { gap: 5px; }
+  .fp-teams a { padding: 1px 9px; white-space: normal; overflow-wrap: anywhere; }
   table.players td, table.players th { overflow-wrap: anywhere; }
   table.card-stats td { overflow-wrap: anywhere; }
   table.players td:first-child, table.players th:first-child { padding-left: 10px; }
