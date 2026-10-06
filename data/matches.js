@@ -125,7 +125,20 @@ window.MATCHES = [
         "minute": 7
       }
     ],
-    "cards": [],
+    "cards": [
+      {
+        "player": "A",
+        "team": "g",
+        "minute": null,
+        "type": "yellow"
+      },
+      {
+        "player": "B",
+        "team": "h",
+        "minute": null,
+        "type": "yellow"
+      }
+    ],
     "home": "g",
     "away": "h",
     "for": "g|h"
