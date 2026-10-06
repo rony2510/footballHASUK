@@ -137,8 +137,8 @@ window.TEAMS = [
     "short": "K",
     "group": "C",
     "players": [],
-    "manager": "",
-    "address": ""
+    "manager": "Apple",
+    "address": "FFFF"
   },
   {
     "id": "l",
