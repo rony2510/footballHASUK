@@ -37,8 +37,8 @@ window.MATCHES = [
   },
   {
     "id": "m3",
-    "date": "",
-    "time": "",
+    "date": "2026-10-17",
+    "time": "11:30",
     "venue": "",
     "homeGoals": null,
     "awayGoals": null,
