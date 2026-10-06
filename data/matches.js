@@ -92,13 +92,14 @@ window.MATCHES = [
     "date": "",
     "time": "",
     "venue": "",
-    "homeGoals": null,
-    "awayGoals": null,
-    "homePens": null,
-    "awayPens": null,
+    "homeGoals": 1,
+    "awayGoals": 1,
+    "homePens": 3,
+    "awayPens": 4,
     "scorers": [],
     "home": "m",
-    "away": "n"
+    "away": "n",
+    "for": "m|n"
   },
   {
     "id": "m8",
