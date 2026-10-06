@@ -75,8 +75,8 @@ a:hover { text-decoration: underline; }
 .nav { display: flex; gap: 4px; flex: none; }
 .nav a {
   color: var(--text);
-  padding: 10px 14px;
-  border-radius: 8px;
+  padding: 10px 18px;
+  border-radius: 999px;
   font-size: 1.05rem;
   font-weight: 500;
   white-space: nowrap;
@@ -118,7 +118,7 @@ main { flex: 1; padding: 28px 0 48px; }
 .hero {
   background: linear-gradient(135deg, var(--teal), #0b4a4a 60%, var(--bar));
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 60px;
   padding: 44px 24px;
   text-align: center;
   margin-bottom: 28px;
@@ -402,6 +402,20 @@ a.fx-name:hover { color: var(--mint); text-decoration: none; }
   font-size: 1rem;
 }
 .fx-meta .tba { color: var(--muted); font-style: italic; }
+/* results page: each side's scorers under its team */
+.fx-scorers {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: start;
+  gap: 28px;
+  margin-top: 18px;
+  font-size: 1rem;
+}
+.fx-scorers ul { list-style: none; margin: 0; padding: 0; min-width: 0; overflow-wrap: anywhere; line-height: 1.7; }
+.fx-scorers .home { text-align: right; }
+.fx-scorers .away { text-align: left; }
+.fx-scorers small { color: var(--muted); }
+.fx-scorers .ball { width: 52px; text-align: center; opacity: 0.8; }
 .fx-score {
   display: grid;
   justify-items: center;
@@ -473,6 +487,7 @@ a.bk-row:hover { background: var(--card); text-decoration: none; }
 .bk-score small { font-weight: 400; color: var(--muted); }
 .bk-row.win { color: var(--mint); font-weight: 700; }
 .bk-row.lose { color: var(--muted); }
+@media (min-width: 601px) { #home-bracket .bk-row { font-size: 0.95rem; } }   /* bigger boxes on the home page, so bigger names */
 .bk-champion {
   position: absolute;
   text-align: center;
@@ -524,7 +539,7 @@ table.players .brief { display: none; text-decoration: none; }
   .brand { font-size: 1.05rem; gap: 10px; }
   .brand .ball { font-size: 1.6rem; }
 
-  .hero { padding: 28px 16px; margin-bottom: 18px; }
+  .hero { padding: 28px 16px; margin-bottom: 18px; border-radius: 40px; }
   .bracket-scroll { margin-bottom: 18px; padding: 12px 8px 14px; }
   .bk-row { padding: 0 6px; font-size: 0.74rem; }
   .hero p { font-size: 1rem; }
@@ -566,6 +581,9 @@ table.players .brief { display: none; text-decoration: none; }
   .fx-crest { width: 48px; height: 48px; }
   .fx-vs { width: 38px; height: 38px; margin-top: 5px; font-size: 0.8rem; }
   .fx-score { padding: 6px 10px; margin-top: 3px; font-size: 1.1rem; }
+  .fx-scorers { gap: 8px; margin-top: 14px; font-size: 0.9rem; }
+  .fx-scorers .home, .fx-scorers .away { text-align: center; }
+  .fx-scorers .ball { width: 38px; }
   .fx-meta { flex-direction: column; align-items: center; gap: 4px; font-size: 0.88rem; }
 
   /* six columns fit a phone: short headings (No., YC, RC) and names that wrap */

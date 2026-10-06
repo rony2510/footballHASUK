@@ -106,7 +106,7 @@ var Bracket = (function () {
     var avail = (container.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight)) || 1000;
     var gap = avail < 700 ? 14 : 24;
     var W = Math.max(100, Math.min(160, Math.floor((avail - 6 * gap) / 7)));
-    var H = 68, vgap = 34, head = 30;
+    var H = options.boxHeight || 68, vgap = options.boxGap || 34, head = 30;   // the home page asks for a taller tree
     var width = 7 * W + 6 * gap;
     var height = head + 4 * H + 3 * vgap;
     var column = { L: { r16: 0, qf: 1, sf: 2 }, C: { final: 3 }, R: { sf: 4, qf: 5, r16: 6 } };

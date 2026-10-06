@@ -87,6 +87,11 @@
     TEAMS.forEach(function (t) { teamById[t.id] = t; });
     function team(id) { return teamById[id] || { id: id, name: id, short: "?" }; }
     function teamName(id) { return team(id).name; }
+    // letters for a team's badge: its short name, or else the initials of its name
+    function badge(t) {
+      if (t.short) return t.short;
+      return String(t.name || "").split(/\s+/).filter(Boolean).slice(0, 3).map(function (w) { return Array.from(w)[0]; }).join("").toUpperCase();
+    }
 
     // Every match of the knockout, with its teams and winner worked out (see js/bracket.js)
     var MATCHES = Bracket.resolve(window.MATCHES || []);
@@ -191,8 +196,68 @@
       if (!el) return;
       Bracket.render(el, MATCHES, {
         name: teamName,
+        boxHeight: 84, boxGap: 52,          // taller than the admin panel's tree
         href: function (id) { return "team.html?id=" + encodeURIComponent(id); }
       });
+    }
+
+    /* The layout shared by the Fixtures and Results pages: stage buttons, one block per
+       stage, one full-width card per match.
+       options: filters / list (element ids), matches (in display order),
+                bottom(match) -> html under the two teams, empty (text when there are none) */
+    function stageBoard(options) {
+      var STAGES = ["r16", "qf", "sf", "final"];
+      var all = options.matches;
+      var shown = "all";
+
+      function teamSide(m, slot) {
+        var id = slot === 0 ? m.home : m.away;
+        var name = id
+          ? '<a class="fx-name" href="team.html?id=' + encodeURIComponent(id) + '">' + esc(teamName(id)) + "</a>"
+          : '<span class="fx-name tbd">' + esc(Bracket.waitingFor(m, slot)) + "</span>";
+        var crest = '<span class="fx-crest' + (id ? "" : " tbd") + '">' + (id ? esc(badge(team(id))) : "?") + "</span>";
+        return '<div class="fx-team ' + (slot === 0 ? "home" : "away") + '">' + (slot === 0 ? name + crest : crest + name) + "</div>";
+      }
+
+      function card(m) {
+        var middle = '<span class="fx-vs">VS</span>';
+        if (m.played) {
+          middle = '<span class="fx-score">' + esc(m.homeGoals) + " – " + esc(m.awayGoals) +
+            (m.homePens !== null && m.awayPens !== null ? "<small>Pens " + esc(m.homePens) + " – " + esc(m.awayPens) + "</small>" : "") + "</span>";
+        }
+        return '<article class="fx-card' + (m.done ? " done" : "") + '">' +
+          '<div class="fx-top"><span class="fx-stage">' + esc(m.roundName) + '</span><span class="fx-no">Match ' + m.no +
+            (m.done ? ' · <span class="fx-done">✓ Done</span>' : "") + "</span></div>" +
+          '<div class="fx-teams">' + teamSide(m, 0) + middle + teamSide(m, 1) + "</div>" +
+          options.bottom(m) + "</article>";
+      }
+
+      function draw() {
+        var stages = STAGES.filter(function (st) { return all.some(function (m) { return m.round === st; }); });
+        if (stages.indexOf(shown) < 0) shown = "all";
+
+        fill(options.filters, !stages.length ? "" : [["all", "All"]].concat(stages.map(function (st) { return [st, Bracket.ROUND_NAMES[st]]; }))
+          .map(function (f) {
+            return '<button type="button" class="pill' + (f[0] === shown ? " active" : "") + '" data-stage="' + f[0] +
+              '" aria-pressed="' + (f[0] === shown) + '">' + esc(f[1]) + "</button>";
+          }).join(""));
+
+        fill(options.list, stages.filter(function (st) { return shown === "all" || shown === st; }).map(function (st) {
+          var list = all.filter(function (m) { return m.round === st; });
+          return '<section class="fx-stage-block"><div class="fx-head"><h2>' + esc(Bracket.ROUND_NAMES[st]) + "</h2>" +
+            '<span class="fx-count">' + list.length + (list.length === 1 ? " match" : " matches") + "</span></div>" +
+            '<div class="fx-list">' + list.map(card).join("") + "</div></section>";
+        }).join("") || '<div class="card empty">' + esc(options.empty) + "</div>");
+      }
+
+      var filters = $(options.filters);
+      if (filters) filters.addEventListener("click", function (e) {
+        var b = e.target.closest ? e.target.closest("[data-stage]") : null;
+        if (!b) return;
+        shown = b.getAttribute("data-stage");
+        draw();
+      });
+      draw();
     }
 
     /* ---------- Pages ---------- */
@@ -243,7 +308,7 @@
 
         fill("team-detail",
           '<a class="back" href="teams.html">← Teams</a>' +
-          '<div class="team-head"><div class="crest">' + esc(t.short) + "</div><div>" +
+          '<div class="team-head"><div class="crest">' + esc(badge(t)) + "</div><div>" +
             '<h1 class="page-title">' + esc(t.name) + "</h1>" +
           "</div></div>" +
           '<div class="grid stats record">' +
@@ -271,71 +336,44 @@
           section("Results", played.filter(mine)));
       },
 
+      // Finished matches, in the same layout as Fixtures, with the scorers of each side under the teams
       results: function () {
-        fill("results-list", matchList(played, "No results yet. Check back after the first match."));
+        stageBoard({
+          filters: "result-filters", list: "results-list",
+          matches: played.slice().reverse(),
+          empty: "No results yet. Check back after the first match.",
+          bottom: function (m) {
+            var names = function (id) {
+              return m.scorers.filter(function (s) { return s.team === id; }).map(function (s) {
+                return "<li>" + esc(s.player) + (s.minute ? " <small>" + esc(s.minute) + "'</small>" : "") + "</li>";
+              }).join("");
+            };
+            var home = names(m.home), away = names(m.away);
+            if (!home && !away) {
+              return m.homeGoals + m.awayGoals > 0 ? '<div class="fx-meta"><span class="tba">Scorers not recorded</span></div>' : "";
+            }
+            return '<div class="fx-scorers"><ul class="home">' + home + '</ul><span class="ball" aria-hidden="true">⚽</span>' +
+              '<ul class="away">' + away + "</ul></div>";
+          }
+        });
       },
 
       // Every match, one block per stage, with buttons to show a single stage.
       // A match with a result shows its score; one marked "done" in the admin panel turns green.
       fixtures: function () {
-        var STAGES = ["r16", "qf", "sf", "final"];
-        var shown = "all";
-
-        function teamSide(m, slot) {
-          var id = slot === 0 ? m.home : m.away;
-          var name = id
-            ? '<a class="fx-name" href="team.html?id=' + encodeURIComponent(id) + '">' + esc(teamName(id)) + "</a>"
-            : '<span class="fx-name tbd">' + esc(Bracket.waitingFor(m, slot)) + "</span>";
-          var crest = '<span class="fx-crest' + (id ? "" : " tbd") + '">' + (id ? esc(team(id).short || "") : "?") + "</span>";
-          return '<div class="fx-team ' + (slot === 0 ? "home" : "away") + '">' + (slot === 0 ? name + crest : crest + name) + "</div>";
-        }
-
-        function card(m) {
-          var d = justDate(m), t = niceTime(m.time);
-          var meta = !d && !t && !m.venue
-            ? '<span class="tba">Date, time and venue to be announced</span>'
-            : "<span>📅 " + (d ? esc(d) : '<em class="tba">Date to be announced</em>') + "</span>" +
-              "<span>🕒 " + (t ? esc(t) : '<em class="tba">Time to be announced</em>') + "</span>" +
-              "<span>📍 " + (m.venue ? esc(m.venue) : '<em class="tba">Venue to be announced</em>') + "</span>";
-          var middle = '<span class="fx-vs">VS</span>';
-          if (m.played) {
-            middle = '<span class="fx-score">' + esc(m.homeGoals) + " – " + esc(m.awayGoals) +
-              (m.homePens !== null && m.awayPens !== null ? "<small>Pens " + esc(m.homePens) + " – " + esc(m.awayPens) + "</small>" : "") + "</span>";
+        stageBoard({
+          filters: "fixture-filters", list: "fixtures-list",
+          matches: MATCHES.slice().sort(byDateAsc),
+          empty: "No matches yet.",
+          bottom: function (m) {
+            var d = justDate(m), t = niceTime(m.time);
+            return '<div class="fx-meta">' + (!d && !t && !m.venue
+              ? '<span class="tba">Date, time and venue to be announced</span>'
+              : "<span>📅 " + (d ? esc(d) : '<em class="tba">Date to be announced</em>') + "</span>" +
+                "<span>🕒 " + (t ? esc(t) : '<em class="tba">Time to be announced</em>') + "</span>" +
+                "<span>📍 " + (m.venue ? esc(m.venue) : '<em class="tba">Venue to be announced</em>') + "</span>") + "</div>";
           }
-          return '<article class="fx-card' + (m.done ? " done" : "") + '">' +
-            '<div class="fx-top"><span class="fx-stage">' + esc(m.roundName) + '</span><span class="fx-no">Match ' + m.no +
-              (m.done ? ' · <span class="fx-done">✓ Done</span>' : "") + "</span></div>" +
-            '<div class="fx-teams">' + teamSide(m, 0) + middle + teamSide(m, 1) + "</div>" +
-            '<div class="fx-meta">' + meta + "</div></article>";
-        }
-
-        function draw() {
-          var all = MATCHES.slice().sort(byDateAsc);
-          var stages = STAGES.filter(function (st) { return all.some(function (m) { return m.round === st; }); });
-          if (stages.indexOf(shown) < 0) shown = "all";
-
-          fill("fixture-filters", [["all", "All"]].concat(stages.map(function (st) { return [st, Bracket.ROUND_NAMES[st]]; }))
-            .map(function (f) {
-              return '<button type="button" class="pill' + (f[0] === shown ? " active" : "") + '" data-stage="' + f[0] +
-                '" aria-pressed="' + (f[0] === shown) + '">' + esc(f[1]) + "</button>";
-            }).join(""));
-
-          fill("fixtures-list", stages.filter(function (st) { return shown === "all" || shown === st; }).map(function (st) {
-            var list = all.filter(function (m) { return m.round === st; });
-            return '<section class="fx-stage-block"><div class="fx-head"><h2>' + esc(Bracket.ROUND_NAMES[st]) + "</h2>" +
-              '<span class="fx-count">' + list.length + (list.length === 1 ? " match" : " matches") + "</span></div>" +
-              '<div class="fx-list">' + list.map(card).join("") + "</div></section>";
-          }).join("") || '<div class="card empty">No matches yet.</div>');
-        }
-
-        var filters = $("fixture-filters");
-        if (filters) filters.addEventListener("click", function (e) {
-          var b = e.target.closest ? e.target.closest("[data-stage]") : null;
-          if (!b) return;
-          shown = b.getAttribute("data-stage");
-          draw();
         });
-        draw();
       },
 
       statistics: function () {
