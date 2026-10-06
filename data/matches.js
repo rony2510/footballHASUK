@@ -23,6 +23,20 @@ window.MATCHES = [
         "minute": 10
       }
     ],
+    "cards": [
+      {
+        "player": "Cubarsi",
+        "team": "a",
+        "minute": 7,
+        "type": "yellow"
+      },
+      {
+        "player": "Luka",
+        "team": "b",
+        "minute": 7,
+        "type": "red"
+      }
+    ],
     "home": "a",
     "away": "b",
     "for": "a|b",
@@ -41,6 +55,7 @@ window.MATCHES = [
     "homePens": null,
     "awayPens": null,
     "scorers": [],
+    "cards": [],
     "home": "c",
     "away": "d",
     "for": "c|d"
@@ -55,6 +70,7 @@ window.MATCHES = [
     "homePens": null,
     "awayPens": null,
     "scorers": [],
+    "cards": [],
     "home": "e",
     "away": "f"
   },
@@ -109,6 +125,7 @@ window.MATCHES = [
         "minute": 7
       }
     ],
+    "cards": [],
     "home": "g",
     "away": "h",
     "for": "g|h"
@@ -123,6 +140,7 @@ window.MATCHES = [
     "homePens": null,
     "awayPens": null,
     "scorers": [],
+    "cards": [],
     "home": "i",
     "away": "j"
   },
@@ -136,6 +154,7 @@ window.MATCHES = [
     "homePens": null,
     "awayPens": null,
     "scorers": [],
+    "cards": [],
     "home": "k",
     "away": "l"
   },
@@ -149,6 +168,7 @@ window.MATCHES = [
     "homePens": 3,
     "awayPens": 4,
     "scorers": [],
+    "cards": [],
     "home": "m",
     "away": "n",
     "for": "m|n"
@@ -163,6 +183,7 @@ window.MATCHES = [
     "homePens": null,
     "awayPens": null,
     "scorers": [],
+    "cards": [],
     "home": "o",
     "away": "p"
   },
@@ -175,7 +196,8 @@ window.MATCHES = [
     "awayGoals": null,
     "homePens": null,
     "awayPens": null,
-    "scorers": []
+    "scorers": [],
+    "cards": []
   },
   {
     "id": "q2",
@@ -186,7 +208,8 @@ window.MATCHES = [
     "awayGoals": null,
     "homePens": null,
     "awayPens": null,
-    "scorers": []
+    "scorers": [],
+    "cards": []
   },
   {
     "id": "q3",
@@ -197,7 +220,8 @@ window.MATCHES = [
     "awayGoals": null,
     "homePens": null,
     "awayPens": null,
-    "scorers": []
+    "scorers": [],
+    "cards": []
   },
   {
     "id": "q4",
@@ -208,7 +232,8 @@ window.MATCHES = [
     "awayGoals": null,
     "homePens": null,
     "awayPens": null,
-    "scorers": []
+    "scorers": [],
+    "cards": []
   },
   {
     "id": "s1",
@@ -219,7 +244,8 @@ window.MATCHES = [
     "awayGoals": null,
     "homePens": null,
     "awayPens": null,
-    "scorers": []
+    "scorers": [],
+    "cards": []
   },
   {
     "id": "s2",
@@ -230,7 +256,8 @@ window.MATCHES = [
     "awayGoals": null,
     "homePens": null,
     "awayPens": null,
-    "scorers": []
+    "scorers": [],
+    "cards": []
   },
   {
     "id": "f",
@@ -241,6 +268,7 @@ window.MATCHES = [
     "awayGoals": null,
     "homePens": null,
     "awayPens": null,
-    "scorers": []
+    "scorers": [],
+    "cards": []
   }
 ];
