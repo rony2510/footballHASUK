@@ -1,8 +1,8 @@
 /*
-  ALL SITE CONTENT LIVES IN THIS FILE.
-  Edit it, commit, push — the pages update themselves. No backend needed.
+  Site details and matches live in this file.
+  Teams live in data/teams.js and are edited from the admin panel (admin.html).
 
-  NOTE: the teams, matches and scores below are SAMPLE DATA.
+  NOTE: the matches and scores below are SAMPLE DATA.
   Replace them with the real ones before sharing the site.
 */
 
@@ -16,24 +16,15 @@ const SITE = {
   phone: ""    // optional
 };
 
-// id must be unique; short = 2-3 letters shown in the round badge
-const TEAMS = [
-  { id: "a", name: "Team A", short: "A", group: "A", area: "Area name" },
-  { id: "b", name: "Team B", short: "B", group: "A", area: "Area name" },
-  { id: "c", name: "Team C", short: "C", group: "A", area: "Area name" },
-  { id: "d", name: "Team D", short: "D", group: "A", area: "Area name" },
-  { id: "e", name: "Team E", short: "E", group: "B", area: "Area name" },
-  { id: "f", name: "Team F", short: "F", group: "B", area: "Area name" },
-  { id: "g", name: "Team G", short: "G", group: "B", area: "Area name" },
-  { id: "h", name: "Team H", short: "H", group: "B", area: "Area name" }
-];
+// TEAMS are not in this file any more: they live in data/teams.js,
+// which the admin panel (admin.html) updates for you.
 
 /*
   One entry per match.
   - Not played yet  -> leave homeGoals / awayGoals as null  (shows on Fixtures)
   - Played          -> fill in the goals                     (shows on Results,
                        and the points table + statistics update automatically)
-  - stage "Group A" / "Group B" counts toward the points table;
+  - stage "Group A" ... "Group D" counts toward the points table;
     anything else (e.g. "Semi-final", "Final") does not.
   - scorers is optional: { player, team (team id), minute }
 */

@@ -1,0 +1,78 @@
+/* Admin panel – builds on css/style.css */
+
+[hidden] { display: none !important; }
+
+.admin-bar { display: flex; align-items: center; gap: 14px; flex: none; }
+.btn { border: 0; cursor: pointer; font: inherit; font-weight: 700; }
+.btn.small { padding: 8px 14px; }
+.btn.outline { border: 1px solid var(--mint); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; filter: none; }
+
+/* ---------- Login / connect ---------- */
+.auth { max-width: 380px; margin: 6vh auto 0; padding: 24px; }
+.auth.wide { max-width: 560px; }
+.auth h1 { margin: 0 0 16px; font-size: 1.4rem; }
+.auth ol { padding-left: 20px; }
+.auth li { margin-bottom: 6px; }
+.auth .btn { width: 100%; margin-top: 18px; padding: 12px; }
+code { background: var(--bar); border-radius: 4px; padding: 1px 6px; }
+.small { font-size: 0.88rem; }
+
+label { display: block; margin: 14px 0 6px; font-weight: 500; font-size: 0.93rem; color: var(--muted); }
+input, select, textarea {
+  width: 100%;
+  background: var(--bar);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text);
+  font: inherit;
+  font-size: 16px;            /* stops phones zooming in on focus */
+  padding: 10px 12px;
+}
+textarea { resize: vertical; line-height: 1.5; }
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--mint); outline-offset: 1px; }
+
+.msg { min-height: 1.4em; margin: 12px 0 0; color: var(--mint); }
+.msg.error { color: #ff9c9c; }
+.msg.ok { color: var(--green); }
+
+/* ---------- Dashboard ---------- */
+.dash { display: grid; grid-template-columns: 190px 1fr; gap: 24px; align-items: start; }
+.dash-menu { display: flex; flex-direction: column; gap: 4px; position: sticky; top: 84px; }
+.dash-menu button {
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 500;
+  padding: 10px 14px;
+  text-align: left;
+}
+.dash-menu button:hover { background: var(--card); }
+.dash-menu button.active { background: var(--teal); color: var(--mint); }
+
+.dash-body { min-width: 0; }
+.dash-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.dash-head h1 { margin: 0; font-size: 1.6rem; }
+.dash-actions { display: flex; gap: 8px; }
+#dash-msg { margin: 8px 0 16px; }
+
+.dash .team-grid { margin: 0; max-width: 620px; }
+button.team-tile { cursor: pointer; font-family: inherit; }
+.team-tile.selected { background: var(--teal); border-color: var(--mint); color: var(--mint); }
+.team-tile.changed { border-color: var(--green); border-style: dashed; }
+
+.editor { margin-top: 18px; max-width: 620px; padding: 18px; }
+.editor h2 { margin: 0; font-size: 1.15rem; }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+.fields .full { grid-column: 1 / -1; }
+
+@media (max-width: 760px) {
+  .dash { grid-template-columns: 1fr; gap: 14px; }
+  .dash-menu { flex-direction: row; overflow-x: auto; position: static; }
+  .dash-menu button { white-space: nowrap; }
+  .fields { grid-template-columns: 1fr; }
+  .dash-head h1 { font-size: 1.4rem; }
+}
