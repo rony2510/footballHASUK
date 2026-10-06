@@ -564,6 +564,13 @@ table.details td { text-align: left; overflow-wrap: anywhere; }
 table.players td:first-child, table.players th:first-child { text-align: left; padding-left: 14px; font-weight: 600; }
 table.players td:nth-child(2), table.players th:nth-child(2) { text-align: center; }
 table.players .brief { display: none; text-decoration: none; }
+/* statistics page: yellow / red card tables */
+table.card-stats th .card-mark { vertical-align: -2px; }
+
+/* longer text (About page) */
+.card.prose { padding: 22px 26px; font-size: 1.08rem; line-height: 1.9; }
+.card.prose p { margin: 0 0 14px; }
+.card.prose p:last-child { margin-bottom: 0; }
 
 .empty { color: var(--muted); text-align: center; padding: 24px; }
 .muted { color: var(--muted); }
@@ -646,6 +653,7 @@ table.players .brief { display: none; text-decoration: none; }
   table.players .long { display: none; }
   table.players .brief { display: inline; }
   table.players td, table.players th { overflow-wrap: anywhere; }
+  table.card-stats td { overflow-wrap: anywhere; }
   table.players td:first-child, table.players th:first-child { padding-left: 10px; }
   table.players td:nth-child(2), table.players th:nth-child(2) { padding-left: 3px; }
 

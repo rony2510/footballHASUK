@@ -164,6 +164,36 @@
       });
     }
 
+    // How many cards of one kind ("yellow" or "red") each player has.
+    // Cards can be recorded in two places in the admin panel: per match (Results) and as a
+    // player's total (Teams). A player's count here is the larger of the two, so entering a
+    // card in both places never counts it twice. The jersey number comes from the squad list.
+    function cardCounts(type) {
+      var tally = {};
+      var entry = function (teamId, name) {
+        var key = teamId + "|" + String(name).trim().toLowerCase();
+        tally[key] = tally[key] || { player: String(name).trim(), team: teamId, jersey: "", inSquad: 0, inMatches: 0 };
+        return tally[key];
+      };
+      TEAMS.forEach(function (t) {
+        (t.players || []).forEach(function (pl) {
+          if (!pl || typeof pl !== "object" || !pl.name) return;
+          var e = entry(t.id, pl.name);
+          e.player = pl.name; e.jersey = pl.jersey || "";
+          e.inSquad = Number(pl[type]) || 0;
+        });
+      });
+      played.forEach(function (m) {
+        m.cards.forEach(function (c) { if (c.type === type) entry(c.team, c.player).inMatches++; });
+      });
+      return Object.keys(tally).map(function (k) {
+        var e = tally[k];
+        return { player: e.player, team: e.team, jersey: e.jersey, count: Math.max(e.inSquad, e.inMatches) };
+      }).filter(function (r) { return r.count > 0; }).sort(function (a, b) {
+        return (b.count - a.count) || teamName(a.team).localeCompare(teamName(b.team)) || a.player.localeCompare(b.player);
+      });
+    }
+
     // one team's record over every match it has played
     function teamRecord(id) {
       var r = { p: 0, w: 0, l: 0, gf: 0, ga: 0 };
@@ -290,7 +320,6 @@
         }
         document.title = t.name + " | " + SITE.title;
         var r = teamRecord(t.id);
-        var mine = function (m) { return m.home === t.id || m.away === t.id; };
         // players may be plain names (older data) or full details
         var players = (t.players || []).map(function (pl) {
           return typeof pl === "string" ? { name: pl } : (pl || {});
@@ -301,12 +330,6 @@
         // column heading with a short form for phones (css shows one or the other)
         var head = function (full, brief) {
           return '<th><span class="long">' + full + '</span><abbr class="brief" title="' + full + '">' + brief + "</abbr></th>";
-        };
-        // a section only appears when the team has something to show in it
-        var section = function (title, list) {
-          return list.length
-            ? '<h2 class="section-title">' + title + '</h2><div class="grid two">' + list.map(matchCard).join("") + "</div>"
-            : "";
         };
 
         fill("team-detail",
@@ -333,10 +356,7 @@
                 return "<tr><td>" + esc(pl.name) + "</td><td>" + text(pl.jersey) + "</td><td>" + text(pl.position) +
                   '</td><td class="pts">' + count(pl.goals) + "</td><td>" + count(pl.yellow) + "</td><td>" + count(pl.red) + "</td></tr>";
               }).join("") + "</tbody></table></div>"
-            : '<div class="card empty">No players added yet.</div>') +
-
-          section("Fixtures", upcoming.filter(mine)) +
-          section("Results", played.filter(mine)));
+            : '<div class="card empty">No players added yet.</div>'));
       },
 
       // Finished matches, in the same layout as Fixtures, with the scorers of each side under the teams
@@ -410,15 +430,19 @@
                 '</td><td class="pts">' + s.goals + "</td></tr>";
             }).join("") + "</tbody></table></div>"
           : '<div class="card empty">No goals recorded yet.</div>');
-      },
 
-      about: function () {
-        fill("about-title", esc(SITE.title));
-        fill("about-contact", [
-          ["Address", SITE.address], ["Email", SITE.email], ["Phone", SITE.phone]
-        ].filter(function (r) { return r[1]; }).map(function (r) {
-          return "<p><strong>" + r[0] + ":</strong> " + esc(r[1]) + "</p>";
-        }).join(""));
+        // cards: one table for yellow, one for red
+        ["yellow", "red"].forEach(function (type) {
+          var rows = cardCounts(type);
+          fill("stats-" + type, rows.length
+            ? '<div class="table-wrap"><table class="card-stats"><thead><tr><th>#</th><th>Player</th><th>Jersey</th><th>Team</th>' +
+              '<th><span class="card-mark ' + type + '" aria-hidden="true"></span>Cards</th></tr></thead><tbody>' +
+              rows.map(function (r, i) {
+                return "<tr><td>" + (i + 1) + "</td><td>" + esc(r.player) + "</td><td>" + (r.jersey ? esc(r.jersey) : '<span class="muted">–</span>') +
+                  "</td><td>" + esc(teamName(r.team)) + '</td><td class="pts">' + r.count + "</td></tr>";
+              }).join("") + "</tbody></table></div>"
+            : '<div class="card empty">No ' + type + " cards recorded yet.</div>");
+        });
       }
     };
 
