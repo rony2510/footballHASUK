@@ -29,6 +29,22 @@ window.TEAMS = [
         "goals": 0,
         "yellow": 0,
         "red": 0
+      },
+      {
+        "name": "RL",
+        "jersey": "3",
+        "position": "Forward",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Pedri",
+        "jersey": "2",
+        "position": "Midfielder",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
       }
     ],
     "manager": "",
