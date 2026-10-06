@@ -346,13 +346,15 @@
   }
 
   function hasResult(s) {
-    return s.homeGoals !== null || s.awayGoals !== null || s.homePens !== null || s.awayPens !== null || (s.scorers || []).length > 0;
+    return s.homeGoals !== null || s.awayGoals !== null || s.homePens !== null || s.awayPens !== null ||
+      (s.scorers || []).length > 0 || !!s.potm;
   }
   function wipeResult(s) {
     s.homeGoals = s.awayGoals = s.homePens = s.awayPens = null;
     s.scorers = [];
     delete s["for"];
     delete s.done;
+    delete s.potm;
   }
 
   function drawResults() {
@@ -412,6 +414,24 @@
     $("m-hs").value = m.home ? scorerLines(s, m.home) : "";
     $("m-as").value = m.away ? scorerLines(s, m.away) : "";
     $("m-done").checked = s.done === true;
+
+    // player of the match: name (with the two squads as suggestions) + which of the two teams
+    $("m-potm").value = s.potm ? s.potm.player : "";
+    var teamPick = $("m-potm-team"), suggestions = $("m-potm-names");
+    teamPick.textContent = ""; suggestions.textContent = "";
+    [m.home, m.away].forEach(function (id, slot) {
+      var o = document.createElement("option");
+      o.value = id || ""; o.textContent = sideName(m, slot);
+      teamPick.appendChild(o);
+      var squad = docs.teams.data.filter(function (t) { return t.id === id; })[0];
+      (squad ? squad.players : []).forEach(function (p) {
+        if (!p.name) return;
+        var name = document.createElement("option");
+        name.value = p.name; name.label = sideName(m, slot);
+        suggestions.appendChild(name);
+      });
+    });
+    teamPick.value = s.potm && s.potm.team === m.away ? m.away : (m.home || "");
     updateMatchForm();
   }
 
@@ -426,7 +446,7 @@
     $("l-ap").textContent = "Penalties – " + sideName(m, 1);
     $("l-hs").textContent = "Scorers – " + sideName(m, 0);
     $("l-as").textContent = "Scorers – " + sideName(m, 1);
-    ["m-hg", "m-ag", "m-hs", "m-as"].forEach(function (id) { $(id).disabled = !m.ready; });
+    ["m-hg", "m-ag", "m-hs", "m-as", "m-potm", "m-potm-team"].forEach(function (id) { $(id).disabled = !m.ready; });
 
     var level = m.ready && typeof s.homeGoals === "number" && s.homeGoals === s.awayGoals;
     $("pens").hidden = !level;
@@ -437,7 +457,7 @@
     var scored = m.ready && typeof s.homeGoals === "number" && typeof s.awayGoals === "number";
     $("m-done").disabled = !scored;
     if (!scored) $("m-done").checked = false;
-    $("m-clear").disabled = !(typeof s.homeGoals === "number" || typeof s.awayGoals === "number" || (s.scorers || []).length);
+    $("m-clear").disabled = !(typeof s.homeGoals === "number" || typeof s.awayGoals === "number" || (s.scorers || []).length || s.potm);
   }
 
   function pickMatch(id) {
@@ -492,6 +512,18 @@
       s.homePens = level ? toNumber($("m-hp").value) : null;
       s.awayPens = level ? toNumber($("m-ap").value) : null;
       s.scorers = parseScorers($("m-hs").value, m.home).concat(parseScorers($("m-as").value, m.away));
+      var best = $("m-potm").value.trim();
+      if (best) {
+        // picking a name from one squad's suggestions also sets that team
+        if (field === "m-potm") {
+          var owner = [m.home, m.away].filter(function (id) {
+            var squad = docs.teams.data.filter(function (t) { return t.id === id; })[0];
+            return squad && squad.players.some(function (p) { return p.name === best; });
+          });
+          if (owner.length === 1) $("m-potm-team").value = owner[0];
+        }
+        s.potm = { player: best, team: $("m-potm-team").value === m.away ? m.away : m.home };
+      } else delete s.potm;
       // remember which two teams this result belongs to (see Bracket.resolve)
       if (hasResult(s)) s["for"] = Bracket.pairKey(m); else delete s["for"];
       if ($("m-done").checked && s.homeGoals !== null && s.awayGoals !== null) s.done = true; else delete s.done;
@@ -534,6 +566,7 @@
       var m = list[i], s = storedMatch(m.id);
       if ((s.homeGoals === null) !== (s.awayGoals === null)) return "Match " + m.no + ": enter the goals for both teams.";
       if (m.played && !m.winner) return "Match " + m.no + " ended level: enter the penalty shoot-out result (it cannot be a draw).";
+      if (s.potm && !m.played) return "Match " + m.no + ": enter the score before the player of the match.";
       if (m.played) {
         var listed = function (id) { return m.scorers.filter(function (x) { return x.team === id; }).length; };
         if (listed(m.home) > m.homeGoals || listed(m.away) > m.awayGoals) return "Match " + m.no + ": more scorers are listed than goals scored.";

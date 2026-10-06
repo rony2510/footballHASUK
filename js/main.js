@@ -349,11 +349,14 @@
               }).join("");
             };
             var home = names(m.home), away = names(m.away);
-            if (!home && !away) {
-              return m.homeGoals + m.awayGoals > 0 ? '<div class="fx-meta"><span class="tba">Scorers not recorded</span></div>' : "";
-            }
-            return '<div class="fx-scorers"><ul class="home">' + home + '</ul><span class="ball" aria-hidden="true">⚽</span>' +
-              '<ul class="away">' + away + "</ul></div>";
+            var scorers = home || away
+              ? '<div class="fx-scorers"><ul class="home">' + home + '</ul><span class="ball" aria-hidden="true">⚽</span>' +
+                '<ul class="away">' + away + "</ul></div>"
+              : (m.homeGoals + m.awayGoals > 0 ? '<div class="fx-meta"><span class="tba">Scorers not recorded</span></div>' : "");
+            var best = m.potm
+              ? '<div class="fx-potm">⭐ Player of the Match : <strong>' + esc(m.potm.player) + "</strong> (" + esc(teamName(m.potm.team)) + ")</div>"
+              : "";
+            return scorers + best;
           }
         });
       },

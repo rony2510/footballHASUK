@@ -58,7 +58,7 @@ var Bracket = (function () {
         home: p.from ? done[p.from[0]].winner : (m.home || null),
         away: p.from ? done[p.from[1]].winner : (m.away || null),
         homeGoals: null, awayGoals: null, homePens: null, awayPens: null,
-        scorers: [], played: false, done: false, winner: null, loser: null
+        scorers: [], potm: null, played: false, done: false, winner: null, loser: null
       };
       r.ready = !!(r.home && r.away);
       // A result is saved together with the two teams it was typed for ("for").
@@ -81,6 +81,8 @@ var Bracket = (function () {
         }
         if (r.winner) r.loser = r.winner === r.home ? r.away : r.home;
         r.done = m.done === true;              // ticked "Mark as done" in the admin panel
+        // player of the match: { player: "name", team: "<team id>" }
+        if (m.potm && m.potm.player) r.potm = { player: m.potm.player, team: m.potm.team === r.away ? r.away : r.home };
       }
       done[p.id] = r;
       return r;

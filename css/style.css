@@ -75,7 +75,7 @@ a:hover { text-decoration: underline; }
 .nav { display: flex; gap: 4px; flex: none; }
 .nav a {
   color: var(--text);
-  padding: 10px 18px;
+  padding: 4px 18px;
   border-radius: 999px;
   font-size: 1.05rem;
   font-weight: 500;
@@ -394,9 +394,9 @@ a.fx-name:hover { color: var(--mint); text-decoration: none; }
 }
 .fx-meta {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 6px 18px;
+  flex-direction: column;         /* date, then time, then venue, one under the other */
+  align-items: center;
+  gap: 6px;
   margin-top: 18px;
   color: var(--text);
   font-size: 1rem;
@@ -416,6 +416,8 @@ a.fx-name:hover { color: var(--mint); text-decoration: none; }
 .fx-scorers .away { text-align: left; }
 .fx-scorers small { color: var(--muted); }
 .fx-scorers .ball { width: 52px; text-align: center; opacity: 0.8; }
+.fx-potm { margin-top: 16px; text-align: center; color: var(--muted); font-size: 1rem; overflow-wrap: anywhere; }
+.fx-potm strong { color: var(--mint); }
 .fx-score {
   display: grid;
   justify-items: center;
