@@ -168,7 +168,38 @@ window.MATCHES = [
     "homePens": 3,
     "awayPens": 4,
     "scorers": [],
-    "cards": [],
+    "cards": [
+      {
+        "player": "Nunu",
+        "team": "m",
+        "minute": null,
+        "type": "red"
+      },
+      {
+        "player": "Haaland",
+        "team": "m",
+        "minute": null,
+        "type": "red"
+      },
+      {
+        "player": "Rodri",
+        "team": "m",
+        "minute": null,
+        "type": "red"
+      },
+      {
+        "player": "Cr",
+        "team": "n",
+        "minute": 7,
+        "type": "red"
+      },
+      {
+        "player": "Backham",
+        "team": "n",
+        "minute": 10,
+        "type": "red"
+      }
+    ],
     "home": "m",
     "away": "n",
     "for": "m|n"
