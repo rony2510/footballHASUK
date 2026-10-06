@@ -42,6 +42,12 @@
     var el = $(id);
     el.textContent = text || "";
     el.className = "msg" + (kind ? " " + kind : "");
+    if (id === "dash-msg") {          // the same message also shows beside the bottom Save buttons
+      Array.prototype.forEach.call(document.querySelectorAll(".dash-msg-copy"), function (copy) {
+        copy.textContent = el.textContent;
+        copy.className = el.className + " dash-msg-copy";
+      });
+    }
   }
 
   /* ---------- passwords ---------- */
@@ -208,6 +214,12 @@
   /* ---------- drawing ---------- */
   var PANELS = { teams: "Teams", results: "Results", views: "Page views" };
 
+  // the Save button at the top and the ones at the bottom of each section always match
+  function setSaveDisabled(off) {
+    $("save").disabled = off;
+    Array.prototype.forEach.call(document.querySelectorAll(".save-btn"), function (button) { button.disabled = off; });
+  }
+
   function draw() {
     Object.keys(PANELS).forEach(function (key) {
       $("panel-" + key).hidden = key !== active;
@@ -219,7 +231,7 @@
     var doc = docs[active];                       // "Page views" has nothing to save
     $("dash-actions").hidden = !doc;
     var dirty = !!doc && isDirty(doc);
-    $("save").disabled = !dirty;
+    setSaveDisabled(!dirty);
     $("discard").disabled = !dirty;
     if (!doc || !doc.loaded) return;
     if (active === "teams") drawTeams(); else drawResults();
@@ -625,7 +637,7 @@
       if (picked.team >= 0) drawPlayerRows();
     }
 
-    $("save").disabled = true;
+    setSaveDisabled(true);
     msg("dash-msg", "Saving…");
     var body = {
       message: "Update " + doc.label + " (admin panel)",
@@ -744,6 +756,9 @@
   $("m-clear").addEventListener("click", clearResult);
   $("views-refresh").addEventListener("click", loadViews);
   $("save").addEventListener("click", save);
+  Array.prototype.forEach.call(document.querySelectorAll(".save-btn"), function (button) {
+    button.addEventListener("click", save);         // the Save buttons at the bottom of Teams and Results
+  });
   $("discard").addEventListener("click", discard);
 
   var resizeTimer;

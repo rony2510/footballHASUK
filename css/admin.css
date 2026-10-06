@@ -99,6 +99,11 @@ label.check:has(input:disabled) { opacity: 0.55; cursor: not-allowed; }
 .players-edit .remove:hover { border-color: #ff9c9c; }
 .players-edit .none { color: var(--muted); text-align: left; padding: 10px 8px; }
 
+/* second Save button at the bottom of Teams and Results */
+.save-again { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 16px; max-width: 760px; margin-top: 18px; }
+.save-again .btn { padding: 11px 22px; }
+.save-again .msg { margin: 0; min-height: 0; }
+
 /* page views table */
 .views { max-width: 460px; }
 .views table { min-width: 0; }
