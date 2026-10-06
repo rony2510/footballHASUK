@@ -16,10 +16,20 @@ window.MATCHES = [
     "awayGoals": 0,
     "homePens": null,
     "awayPens": null,
-    "scorers": [],
+    "scorers": [
+      {
+        "player": "Lamine",
+        "team": "a",
+        "minute": 10
+      }
+    ],
     "home": "a",
     "away": "b",
-    "for": "a|b"
+    "for": "a|b",
+    "potm": {
+      "player": "Lamine Yamal",
+      "team": "a"
+    }
   },
   {
     "id": "m2",
