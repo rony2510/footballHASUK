@@ -63,8 +63,8 @@ window.MATCHES = [
   },
   {
     "id": "m5",
-    "date": "",
-    "time": "",
+    "date": "2026-10-17",
+    "time": "12:30",
     "venue": "",
     "homeGoals": null,
     "awayGoals": null,
