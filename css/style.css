@@ -213,6 +213,16 @@ body[data-page="teams"] main .container { max-width: 1176px; }
 .back { display: inline-block; margin-bottom: 14px; padding: 6px 0; }
 .team-head { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
 .team-head .page-title { margin: 0; }
+/* team page headings (Team Details, Players, Fixtures, Results): centred, no box, well spaced */
+#team-detail .section-title {
+  background: none;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  margin: 64px 0 20px;
+  text-align: center;
+  font-size: 1.35rem;
+}
 .crest {
   flex: none;
   width: 60px; height: 60px;
