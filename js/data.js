@@ -16,7 +16,11 @@ const SITE = {
   // Page-view counting (shown in the admin panel under "Page views").
   // Each page tells this free public counting service "one more view" when it is opened.
   // Set api to "" to switch counting off.
-  views: { api: "https://abacus.jasoncameron.dev", namespace: "hasuk-football-2026" }
+  // To start the counts again from zero, change the end of "namespace" (r2 -> r3 -> r4 ...).
+  // Views are counted ONLY when the site is opened at "host" (the GitHub Pages address).
+  // Copies opened anywhere else (your own computer, a local server, another address) are
+  // never counted. If the site ever moves to its own domain, change "host" to match.
+  views: { api: "https://abacus.jasoncameron.dev", namespace: "hasuk-football-2026-r2", host: "rony2510.github.io" }
 };
 
 // Teams and matches are not in this file: they live in data/teams.js and

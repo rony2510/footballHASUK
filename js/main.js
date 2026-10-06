@@ -429,13 +429,13 @@
 
   /* ---------- Page views ----------
      Adds one to this page's counter. Nothing about the visitor is sent or stored, only
-     "this page was opened". Previews on your own computer are not counted. */
+     "this page was opened". Only views of the site hosted on GitHub are counted. */
   function countView() {
     var views = SITE.views;
     var pages = ["home", "teams", "team", "results", "fixtures", "statistics", "about"];
     if (!views || !views.api || pages.indexOf(page) < 0) return;
-    var host = location.hostname;
-    if (location.protocol === "file:" || !host || host === "localhost" || host === "127.0.0.1") return;
+    // only the published site counts: not a copy opened from a computer or a local server
+    if (location.hostname !== views.host) return;
     try {
       fetch(views.api + "/hit/" + views.namespace + "/" + page, { cache: "no-store", keepalive: true })
         .catch(function () { /* counting must never break the page */ });
