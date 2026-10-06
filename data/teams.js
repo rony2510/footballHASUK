@@ -27,7 +27,7 @@ window.TEAMS = [
         "jersey": "9",
         "position": "Defender",
         "goals": 0,
-        "yellow": 0,
+        "yellow": 1,
         "red": 0
       },
       {
@@ -36,7 +36,7 @@ window.TEAMS = [
         "position": "Forward",
         "goals": 0,
         "yellow": 0,
-        "red": 0
+        "red": 1
       },
       {
         "name": "Pedri",
