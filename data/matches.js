@@ -40,14 +40,15 @@ window.MATCHES = [
     "date": "2026-10-17",
     "time": "11:30",
     "venue": "",
-    "homeGoals": null,
-    "awayGoals": null,
+    "homeGoals": 1,
+    "awayGoals": 0,
     "homePens": null,
     "awayPens": null,
     "scorers": [],
     "cards": [],
     "home": "e",
-    "away": "f"
+    "away": "f",
+    "for": "e|f"
   },
   {
     "id": "m4",
