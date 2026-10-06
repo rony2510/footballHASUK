@@ -52,7 +52,7 @@ window.MATCHES = [
     "id": "m4",
     "date": "2026-10-17",
     "time": "09:30",
-    "venue": "Fulbari",
+    "venue": "Fulbari, Kalmakanda, Netrakona",
     "homeGoals": 3,
     "awayGoals": 5,
     "homePens": null,
