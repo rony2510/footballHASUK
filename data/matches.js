@@ -224,12 +224,13 @@ window.MATCHES = [
     "date": "",
     "time": "",
     "venue": "",
-    "homeGoals": null,
-    "awayGoals": null,
+    "homeGoals": 3,
+    "awayGoals": 2,
     "homePens": null,
     "awayPens": null,
     "scorers": [],
-    "cards": []
+    "cards": [],
+    "for": "e|h"
   },
   {
     "id": "q3",
