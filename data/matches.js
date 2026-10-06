@@ -50,16 +50,58 @@ window.MATCHES = [
   },
   {
     "id": "m4",
-    "date": "",
-    "time": "",
-    "venue": "",
-    "homeGoals": null,
-    "awayGoals": null,
+    "date": "2026-10-17",
+    "time": "09:30",
+    "venue": "Fulbari",
+    "homeGoals": 3,
+    "awayGoals": 5,
     "homePens": null,
     "awayPens": null,
-    "scorers": [],
+    "scorers": [
+      {
+        "player": "Messi",
+        "team": "g",
+        "minute": 10
+      },
+      {
+        "player": "Messi",
+        "team": "g",
+        "minute": 10
+      },
+      {
+        "player": "Messi",
+        "team": "g",
+        "minute": 10
+      },
+      {
+        "player": "Ronaldo",
+        "team": "h",
+        "minute": 7
+      },
+      {
+        "player": "Ronaldo",
+        "team": "h",
+        "minute": 7
+      },
+      {
+        "player": "Ronaldo",
+        "team": "h",
+        "minute": 7
+      },
+      {
+        "player": "Ronaldo",
+        "team": "h",
+        "minute": 7
+      },
+      {
+        "player": "Ronaldo",
+        "team": "h",
+        "minute": 7
+      }
+    ],
     "home": "g",
-    "away": "h"
+    "away": "h",
+    "for": "g|h"
   },
   {
     "id": "m5",
