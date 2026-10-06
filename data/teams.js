@@ -10,130 +10,155 @@
 window.TEAMS = [
   {
     "id": "a",
-    "name": "FC NAYANKANDI",
-    "short": "FC N",
+    "name": "Team Barcelona",
+    "short": "",
     "group": "A",
-    "area": "",
-    "players": []
+    "players": [
+      {
+        "name": "Lamine Yamal",
+        "jersey": "10",
+        "position": "Forward",
+        "goals": 1,
+        "yellow": 0,
+        "red": 0
+      }
+    ],
+    "manager": "",
+    "address": ""
   },
   {
     "id": "b",
-    "name": "FC Chengni",
-    "short": "FC B",
+    "name": "Team B",
+    "short": "",
     "group": "A",
-    "area": "",
-    "players": []
+    "players": [],
+    "manager": "",
+    "address": ""
   },
   {
     "id": "c",
     "name": "Team C",
     "short": "C",
     "group": "A",
-    "area": "",
-    "players": []
+    "players": [],
+    "manager": "",
+    "address": ""
   },
   {
     "id": "d",
     "name": "Team D",
     "short": "D",
     "group": "A",
-    "area": "",
-    "players": []
+    "players": [],
+    "manager": "",
+    "address": ""
   },
   {
     "id": "e",
     "name": "Team E",
     "short": "E",
     "group": "B",
-    "area": "",
-    "players": []
+    "players": [],
+    "manager": "",
+    "address": ""
   },
   {
     "id": "f",
     "name": "Team F",
     "short": "F",
     "group": "B",
-    "area": "",
-    "players": []
+    "players": [],
+    "manager": "",
+    "address": ""
   },
   {
     "id": "g",
     "name": "Team G",
     "short": "G",
     "group": "B",
-    "area": "",
-    "players": []
+    "players": [],
+    "manager": "",
+    "address": ""
   },
   {
     "id": "h",
     "name": "Team H",
     "short": "H",
     "group": "B",
-    "area": "",
-    "players": []
+    "players": [],
+    "manager": "",
+    "address": ""
   },
   {
     "id": "i",
     "name": "Team I",
     "short": "I",
     "group": "C",
-    "area": "",
-    "players": []
+    "players": [],
+    "manager": "",
+    "address": ""
   },
   {
     "id": "j",
     "name": "Team J",
     "short": "J",
     "group": "C",
-    "area": "",
-    "players": []
+    "players": [],
+    "manager": "",
+    "address": ""
   },
   {
     "id": "k",
     "name": "Team K",
     "short": "K",
     "group": "C",
-    "area": "",
-    "players": []
+    "players": [],
+    "manager": "",
+    "address": ""
   },
   {
     "id": "l",
     "name": "Team L",
     "short": "L",
     "group": "C",
-    "area": "",
-    "players": []
+    "players": [],
+    "manager": "",
+    "address": ""
   },
   {
     "id": "m",
     "name": "Team M",
     "short": "M",
     "group": "D",
-    "area": "",
-    "players": []
+    "players": [],
+    "manager": "",
+    "address": ""
   },
   {
     "id": "n",
     "name": "Team N",
     "short": "N",
     "group": "D",
-    "area": "",
-    "players": []
+    "players": [],
+    "manager": "",
+    "address": ""
   },
   {
     "id": "o",
     "name": "Team O",
     "short": "O",
     "group": "D",
-    "area": "",
-    "players": []
+    "players": [],
+    "manager": "",
+    "address": ""
   },
   {
     "id": "p",
     "name": "Team P",
     "short": "P",
     "group": "D",
-    "area": "",
-    "players": []
+    "players": [],
+    "manager": "",
+    "address": ""
   }
 ];
