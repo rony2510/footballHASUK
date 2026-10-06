@@ -12,53 +12,28 @@ window.MATCHES = [
     "date": "",
     "time": "",
     "venue": "",
-    "homeGoals": 1,
-    "awayGoals": 0,
+    "homeGoals": null,
+    "awayGoals": null,
     "homePens": null,
     "awayPens": null,
-    "scorers": [
-      {
-        "player": "Lamine",
-        "team": "a",
-        "minute": 10
-      }
-    ],
-    "cards": [
-      {
-        "player": "Cubarsi",
-        "team": "a",
-        "minute": 7,
-        "type": "yellow"
-      },
-      {
-        "player": "Luka",
-        "team": "b",
-        "minute": 7,
-        "type": "red"
-      }
-    ],
+    "scorers": [],
+    "cards": [],
     "home": "a",
-    "away": "b",
-    "for": "a|b",
-    "potm": {
-      "player": "Lamine Yamal",
-      "team": "a"
-    }
+    "away": "p"
   },
   {
     "id": "m2",
     "date": "",
     "time": "",
     "venue": "",
-    "homeGoals": 0,
-    "awayGoals": 4,
+    "homeGoals": null,
+    "awayGoals": null,
     "homePens": null,
     "awayPens": null,
     "scorers": [],
     "cards": [],
     "home": "c",
-    "away": "d",
-    "for": "c|d"
+    "away": "b"
   },
   {
     "id": "m3",
@@ -175,7 +150,7 @@ window.MATCHES = [
     "id": "m7",
     "date": "",
     "time": "",
-    "venue": "",
+    "venue": "Fulbari, Kalmakanda, Netrakona",
     "homeGoals": 1,
     "awayGoals": 1,
     "homePens": 3,
@@ -229,7 +204,7 @@ window.MATCHES = [
     "scorers": [],
     "cards": [],
     "home": "o",
-    "away": "p"
+    "away": "d"
   },
   {
     "id": "q1",
