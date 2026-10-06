@@ -12,10 +12,8 @@
 (function () {
   "use strict";
 
-  var TEAMS_PATH = "data/teams.js";
   var TOKEN_KEY = "hasuk-admin-token";
   var SESSION_KEY = "hasuk-admin-session";
-  var GROUPS = ["A", "B", "C", "D"];
   var API = "https://api.github.com/repos/" + ADMIN_REPO.owner + "/" + ADMIN_REPO.repo;
 
   var $ = function (id) { return document.getElementById(id); };
@@ -24,7 +22,6 @@
   // The login lasts for this browser tab: it survives a page refresh and ends
   // when you log out or close the tab.
   var session = { key: null, token: null, slot: TOKEN_KEY };
-  var state = { teams: [], saved: "", sha: null, header: "", selected: -1 };
 
   /* ---------- small helpers ---------- */
   function b64(bytes) {
@@ -81,7 +78,7 @@
   // after a successful login (or a restored one): dashboard if this browser has the token, else ask for it
   async function enter() {
     session.token = await readToken();
-    if (session.token) { show("view-dash"); loadTeams(); }
+    if (session.token) { show("view-dash"); loadAll(); }
     else { $("repo-name").textContent = ADMIN_REPO.owner + "/" + ADMIN_REPO.repo; show("view-connect"); $("token").focus(); }
   }
 
@@ -126,136 +123,460 @@
     return { status: res.status, ok: res.ok, data: data };
   }
 
-  function explain(status) {
+  function explain(status, doc) {
     if (status === 401) return "GitHub did not accept the access token (it may have expired). Please connect again.";
     if (status === 403) return "The access token is not allowed to change this repository. It needs Contents: Read and write.";
-    if (status === 404) return "GitHub could not find " + TEAMS_PATH + " in " + ADMIN_REPO.owner + "/" + ADMIN_REPO.repo + ". Push the site once so the file exists, and check the token can access this repository.";
-    if (status === 409 || status === 422) return "The team data was changed somewhere else since you opened this page. Reload the page and try again.";
+    if (status === 404) return "GitHub could not find " + doc.path + " in " + ADMIN_REPO.owner + "/" + ADMIN_REPO.repo + ". Check the token can access this repository.";
+    if (status === 409 || status === 422) return "The " + doc.label + " were changed somewhere else since you opened this page. Reload the page and try again.";
     return "GitHub returned an error (" + status + "). Please try again.";
   }
 
-  /* ---------- teams data ---------- */
-  function parseTeams(text) {
-    var at = text.lastIndexOf("window.TEAMS");
+  /* ---------- data files ----------
+     Each one is a small file in the repository:  window.NAME = [ ...JSON... ];  */
+  function makeDoc(path, varName, label) {
+    return { path: path, varName: varName, label: label, data: [], saved: "[]", sha: null, header: "window." + varName + " = ", loaded: false };
+  }
+  var docs = {
+    teams: makeDoc("data/teams.js", "TEAMS", "teams"),
+    results: makeDoc("data/matches.js", "MATCHES", "results")
+  };
+  var active = "teams";            // which section is open
+  var picked = { team: -1, match: "m1" };
+
+  function isDirty(doc) { return doc.loaded && JSON.stringify(doc.data) !== doc.saved; }
+  function anyDirty() { return isDirty(docs.teams) || isDirty(docs.results); }
+
+  function parseDoc(doc, text) {
+    var at = text.lastIndexOf("window." + doc.varName);
     var start = text.indexOf("[", at), end = text.lastIndexOf("]");
     if (at < 0 || start < 0 || end < start) throw new Error("format");
-    return { header: text.slice(0, start), teams: JSON.parse(text.slice(start, end + 1)) };
+    return { header: text.slice(0, start), data: JSON.parse(text.slice(start, end + 1)) };
   }
-  function serialize() {
-    return state.header + JSON.stringify(state.teams, null, 2) + ";\n";
-  }
-  function isDirty() { return JSON.stringify(state.teams) !== state.saved; }
 
-  async function loadTeams() {
-    msg("dash-msg", "Loading teams…");
+  // returns "" when loaded, or the problem as text
+  async function loadDoc(doc) {
     var res;
-    try { res = await github("/contents/" + TEAMS_PATH + "?ref=" + encodeURIComponent(ADMIN_REPO.branch)); }
-    catch (e) { return msg("dash-msg", "Could not reach GitHub. Check your internet connection and reload.", "error"); }
-
-    if (res.status === 401) { forgetToken(); show("view-connect"); return msg("connect-msg", explain(401), "error"); }
-    if (!res.ok) return msg("dash-msg", explain(res.status), "error");
-
-    try {
-      var parsed = parseTeams(dec.decode(unb64(res.data.content)));
-      state.teams = parsed.teams.map(function (t) {
-        return { id: t.id, name: t.name || "", short: t.short || "", group: t.group || "", area: t.area || "", players: t.players || [] };
-      });
-      state.header = parsed.header;
-    } catch (e) {
-      return msg("dash-msg", "Could not read " + TEAMS_PATH + ". It may have been edited by hand in a way that is not valid JSON.", "error");
+    try { res = await github("/contents/" + doc.path + "?ref=" + encodeURIComponent(ADMIN_REPO.branch)); }
+    catch (e) { return "Could not reach GitHub. Check your internet connection and reload."; }
+    if (res.status === 401) return "401";
+    if (res.status === 404 && doc === docs.results) {
+      return doc.path + " is not on GitHub yet. Push the site from your computer once, then reload this page.";
     }
-    state.saved = JSON.stringify(state.teams);
-    state.sha = res.data.sha;
-    state.selected = -1;
+    if (!res.ok) return explain(res.status, doc);
+    try {
+      var parsed = parseDoc(doc, dec.decode(unb64(res.data.content)));
+      doc.data = parsed.data; doc.header = parsed.header;
+    } catch (e) {
+      return "Could not read " + doc.path + ". It may have been edited by hand in a way that is not valid JSON.";
+    }
+    doc.sha = res.data.sha;
+    return "";
+  }
+
+  async function loadAll() {
+    msg("dash-msg", "Loading…");
+    var problems = await Promise.all([loadDoc(docs.teams), loadDoc(docs.results)]);
+    if (problems.indexOf("401") >= 0) { forgetToken(); show("view-connect"); return msg("connect-msg", explain(401), "error"); }
+    var problem = problems.filter(Boolean)[0];
+    if (problem) return msg("dash-msg", problem, "error");
+
+    docs.teams.data = docs.teams.data.map(function (t) {
+      var team = Object.assign({}, t, {
+        name: t.name || "", short: t.short || "", manager: t.manager || "",
+        address: t.address || t.area || "",             // "area" was the old name of this field
+        players: (t.players || []).map(cleanPlayer)
+      });
+      delete team.area;
+      return team;
+    });
+    docs.teams.saved = JSON.stringify(docs.teams.data);
+    docs.teams.loaded = true;
+
+    // always the full set of 15 matches, in bracket order
+    var stored = {}, fresh = Bracket.blank(docs.teams.data);
+    docs.results.data.forEach(function (m) { if (m && m.id) stored[m.id] = m; });
+    docs.results.data = fresh.map(function (b) { return Object.assign(b, stored[b.id] || {}); });
+    docs.results.saved = JSON.stringify(docs.results.data);
+    docs.results.loaded = true;
+
+    picked.team = -1; picked.match = "m1";
     $("editor").hidden = true;
     msg("dash-msg", "");
-    drawTeams();
+    draw();
   }
 
+  /* ---------- drawing ---------- */
+  function draw() {
+    Object.keys(docs).forEach(function (key) {
+      $("panel-" + key).hidden = key !== active;
+      var button = document.querySelector('.dash-menu [data-panel="' + key + '"]');
+      button.classList.toggle("active", key === active);
+      button.classList.toggle("unsaved", isDirty(docs[key]));
+    });
+    $("dash-title").textContent = active === "teams" ? "Teams" : "Results";
+    var dirty = isDirty(docs[active]);
+    $("save").disabled = !dirty;
+    $("discard").disabled = !dirty;
+    if (!docs[active].loaded) return;
+    if (active === "teams") drawTeams(); else drawResults();
+  }
+
+  /* ---------- Teams ---------- */
   function drawTeams() {
-    var before = JSON.parse(state.saved || "[]");
+    var before = JSON.parse(docs.teams.saved);
     var grid = $("admin-teams");
     grid.textContent = "";
-    state.teams.forEach(function (t, i) {
+    docs.teams.data.forEach(function (t, i) {
       var b = document.createElement("button");
       b.type = "button";
-      b.className = "team-tile" + (i === state.selected ? " selected" : "") +
+      b.className = "team-tile" + (i === picked.team ? " selected" : "") +
         (JSON.stringify(t) !== JSON.stringify(before[i]) ? " changed" : "");
       var span = document.createElement("span");
       span.textContent = t.name || "(no name)";
       b.appendChild(span);
-      b.addEventListener("click", function () { select(i); });
+      b.addEventListener("click", function () { pickTeam(i); });
       grid.appendChild(b);
     });
-    var dirty = isDirty();
-    $("save").disabled = !dirty;
-    $("discard").disabled = !dirty;
   }
 
-  function select(i) {
-    state.selected = i;
-    var t = state.teams[i];
-    $("editor-title").textContent = "Edit team";
+  // a player is { name, jersey, position, goals, yellow, red }; older data had just the name
+  function cleanPlayer(p) {
+    if (typeof p === "string") p = { name: p };
+    p = p || {};
+    var count = function (v) { v = Math.floor(Number(v)); return isFinite(v) && v > 0 ? v : 0; };
+    return {
+      name: String(p.name || "").trim(), jersey: String(p.jersey === undefined || p.jersey === null ? "" : p.jersey).trim(),
+      position: String(p.position || "").trim(), goals: count(p.goals), yellow: count(p.yellow), red: count(p.red)
+    };
+  }
+
+  var PLAYER_FIELDS = [
+    ["name", "text", "Player name"], ["jersey", "text", "Jersey number"], ["position", "text", "Position"],
+    ["goals", "number", "Goals"], ["yellow", "number", "Yellow cards"], ["red", "number", "Red cards"]
+  ];
+
+  // one row of inputs per player
+  function drawPlayerRows() {
+    var t = docs.teams.data[picked.team], body = $("f-players");
+    body.textContent = "";
+    if (!t.players.length) {
+      var empty = body.insertRow().insertCell();
+      empty.colSpan = PLAYER_FIELDS.length + 1;
+      empty.className = "none";
+      empty.textContent = "No players yet.";
+      return;
+    }
+    t.players.forEach(function (p, row) {
+      var tr = body.insertRow();
+      PLAYER_FIELDS.forEach(function (f) {
+        var input = document.createElement("input");
+        input.type = f[1];
+        input.setAttribute("data-field", f[0]);
+        input.setAttribute("aria-label", f[2]);
+        if (f[1] === "number") { input.min = 0; input.max = 99; input.step = 1; input.inputMode = "numeric"; }
+        if (f[0] === "jersey") { input.inputMode = "numeric"; input.maxLength = 3; }
+        if (f[0] === "name") input.maxLength = 60;
+        if (f[0] === "position") { input.setAttribute("list", "positions"); input.maxLength = 30; }
+        input.value = f[1] === "number" && !p[f[0]] ? "" : p[f[0]];
+        if (f[1] === "number") input.placeholder = "0";
+        tr.insertCell().appendChild(input);
+      });
+      var remove = document.createElement("button");
+      remove.type = "button"; remove.className = "remove"; remove.textContent = "✕";
+      remove.setAttribute("aria-label", "Remove player");
+      remove.addEventListener("click", function () {
+        t.players.splice(row, 1);
+        drawPlayerRows();
+        msg("dash-msg", "");
+        draw();
+      });
+      tr.insertCell().appendChild(remove);
+    });
+  }
+
+  function pickTeam(i) {
+    picked.team = i;
+    var t = docs.teams.data[i];
     $("f-name").value = t.name;
     $("f-short").value = t.short;
-    $("f-area").value = t.area;
-    $("f-players").value = t.players.join("\n");
-
-    var groups = GROUPS.indexOf(t.group) < 0 && t.group ? GROUPS.concat(t.group) : GROUPS;
-    var sel = $("f-group");
-    sel.textContent = "";
-    groups.forEach(function (g) {
-      var o = document.createElement("option");
-      o.value = g; o.textContent = "Group " + g;
-      sel.appendChild(o);
-    });
-    sel.value = t.group;
-
+    $("f-manager").value = t.manager;
+    $("f-address").value = t.address;
+    drawPlayerRows();
     $("editor").hidden = false;
-    drawTeams();
+    draw();
     $("f-name").focus();
   }
 
-  function readEditor() {
-    var t = state.teams[state.selected];
+  function readTeamEditor() {
+    var t = docs.teams.data[picked.team];
     if (!t) return;
     t.name = $("f-name").value.trim();
     t.short = $("f-short").value.trim();
-    t.group = $("f-group").value;
-    t.area = $("f-area").value.trim();
-    t.players = $("f-players").value.split("\n").map(function (p) { return p.trim(); }).filter(Boolean);
+    t.manager = $("f-manager").value.trim();
+    t.address = $("f-address").value.trim();
+    t.players = Array.prototype.map.call($("f-players").querySelectorAll("tr"), function (tr) {
+      var p = {};
+      Array.prototype.forEach.call(tr.querySelectorAll("input"), function (input) { p[input.getAttribute("data-field")] = input.value; });
+      return p;
+    }).filter(function (p) { return "name" in p; }).map(cleanPlayer);
     msg("dash-msg", "");
-    drawTeams();
+    draw();
+  }
+
+  function addPlayer() {
+    var t = docs.teams.data[picked.team];
+    if (!t) return;
+    t.players.push(cleanPlayer({}));
+    drawPlayerRows();
+    draw();
+    var names = $("f-players").querySelectorAll('input[data-field="name"]');
+    names[names.length - 1].focus();
+  }
+
+  /* ---------- Results ---------- */
+  function teamName(id) {
+    var t = docs.teams.data.filter(function (x) { return x.id === id; })[0];
+    return t ? (t.name || "(no name)") : id;
+  }
+  function resolved() { return Bracket.resolve(docs.results.data); }
+  function storedMatch(id) { return docs.results.data.filter(function (m) { return m.id === id; })[0]; }
+  function sideName(m, slot) {
+    var id = slot === 0 ? m.home : m.away;
+    return id ? teamName(id) : Bracket.waitingFor(m, slot);
+  }
+
+  function hasResult(s) {
+    return s.homeGoals !== null || s.awayGoals !== null || s.homePens !== null || s.awayPens !== null || (s.scorers || []).length > 0;
+  }
+  function wipeResult(s) {
+    s.homeGoals = s.awayGoals = s.homePens = s.awayPens = null;
+    s.scorers = [];
+    delete s["for"];
+  }
+
+  function drawResults() {
+    var list = resolved();
+    Bracket.render($("admin-bracket"), list, { name: teamName, onPick: pickMatch, selected: picked.match });
+
+    var select = $("m-pick");
+    select.textContent = "";
+    list.forEach(function (m) {
+      var o = document.createElement("option");
+      o.value = m.id;
+      o.textContent = "Match " + m.no + " · " + m.roundName + " · " + sideName(m, 0) + " v " + sideName(m, 1);
+      select.appendChild(o);
+    });
+    select.value = picked.match;
+  }
+
+  function numberText(v) { return v === null || v === undefined ? "" : String(v); }
+  function scorerLines(m, teamId) {
+    return (m.scorers || []).filter(function (s) { return s.team === teamId; }).map(function (s) {
+      return s.player + (s.minute ? " " + s.minute : "");
+    }).join("\n");
+  }
+
+  // puts the picked match into the form
+  function fillMatchEditor() {
+    var m = resolved().filter(function (x) { return x.id === picked.match; })[0];
+    var stored = storedMatch(m.id);
+    var s = m.stale ? {} : stored;         // a result typed for other teams is not shown
+
+    [["m-home", 0, m.home], ["m-away", 1, m.away]].forEach(function (f) {
+      var select = $(f[0]);
+      select.textContent = "";
+      if (m.from) {                                  // decided by earlier matches
+        var only = document.createElement("option");
+        only.textContent = sideName(m, f[1]);
+        select.appendChild(only);
+        select.disabled = true;
+      } else {
+        docs.teams.data.forEach(function (t) {
+          var o = document.createElement("option");
+          o.value = t.id; o.textContent = t.name || "(no name)";
+          select.appendChild(o);
+        });
+        select.value = f[2] || "";
+        select.disabled = false;
+      }
+    });
+
+    $("m-date").value = stored.date || "";
+    $("m-time").value = stored.time || "";
+    $("m-venue").value = stored.venue || "";
+    $("m-hg").value = numberText(s.homeGoals);
+    $("m-ag").value = numberText(s.awayGoals);
+    $("m-hp").value = numberText(s.homePens);
+    $("m-ap").value = numberText(s.awayPens);
+    $("m-hs").value = m.home ? scorerLines(s, m.home) : "";
+    $("m-as").value = m.away ? scorerLines(s, m.away) : "";
+    updateMatchForm();
+  }
+
+  // labels, and which boxes can be used, for the picked match
+  function updateMatchForm() {
+    var m = resolved().filter(function (x) { return x.id === picked.match; })[0];
+    var s = m.stale ? {} : storedMatch(m.id);
+    $("m-title").textContent = "Match " + m.no + " · " + m.roundName;
+    $("l-hg").textContent = "Goals – " + sideName(m, 0);
+    $("l-ag").textContent = "Goals – " + sideName(m, 1);
+    $("l-hp").textContent = "Penalties – " + sideName(m, 0);
+    $("l-ap").textContent = "Penalties – " + sideName(m, 1);
+    $("l-hs").textContent = "Scorers – " + sideName(m, 0);
+    $("l-as").textContent = "Scorers – " + sideName(m, 1);
+    ["m-hg", "m-ag", "m-hs", "m-as"].forEach(function (id) { $(id).disabled = !m.ready; });
+
+    var level = m.ready && typeof s.homeGoals === "number" && s.homeGoals === s.awayGoals;
+    $("pens").hidden = !level;
+    $("m-note").textContent = !m.ready
+      ? "The result can be entered once both teams are known."
+      : level ? "Level score: enter the penalty shoot-out result to decide the winner." : "";
+    $("m-clear").disabled = !(typeof s.homeGoals === "number" || typeof s.awayGoals === "number" || (s.scorers || []).length);
+  }
+
+  function pickMatch(id) {
+    picked.match = id;
+    fillMatchEditor();
+    draw();
+  }
+
+  function toNumber(text) {
+    text = String(text).trim();
+    if (text === "") return null;
+    var n = Math.floor(Number(text));
+    return isFinite(n) && n >= 0 ? n : null;
+  }
+  function parseScorers(text, teamId) {
+    return text.split("\n").map(function (line) { return line.trim(); }).filter(Boolean).map(function (line) {
+      var m = line.match(/^(.*?)[\s,]+(\d{1,3})'?$/);      // "Name 23"  ->  player + minute
+      return m && m[1].trim() ? { player: m[1].trim(), team: teamId, minute: Number(m[2]) }
+                              : { player: line, team: teamId, minute: null };
+    });
+  }
+
+  function readMatchEditor(e) {
+    var s = storedMatch(picked.match);
+    var m = resolved().filter(function (x) { return x.id === picked.match; })[0];
+    var field = e && e.target ? e.target.id : "";
+
+    if (field === "m-pick") return pickMatch($("m-pick").value);
+
+    // changing a 1st Round team: the two teams swap places, so nobody is left out or listed twice
+    if ((field === "m-home" || field === "m-away") && !m.from) {
+      var slot = field === "m-home" ? "home" : "away";
+      var incoming = $(field).value, outgoing = s[slot];
+      docs.results.data.forEach(function (other) {
+        ["home", "away"].forEach(function (k) {
+          if (other[k] === incoming && !(other === s && k === slot)) other[k] = outgoing;
+        });
+      });
+      s[slot] = incoming;
+      fillMatchEditor();
+      msg("dash-msg", "");
+      return draw();
+    }
+
+    s.date = $("m-date").value;
+    s.time = $("m-time").value;
+    s.venue = $("m-venue").value.trim();
+    if (m.ready) {
+      s.homeGoals = toNumber($("m-hg").value);
+      s.awayGoals = toNumber($("m-ag").value);
+      var level = s.homeGoals !== null && s.homeGoals === s.awayGoals;
+      s.homePens = level ? toNumber($("m-hp").value) : null;
+      s.awayPens = level ? toNumber($("m-ap").value) : null;
+      s.scorers = parseScorers($("m-hs").value, m.home).concat(parseScorers($("m-as").value, m.away));
+      // remember which two teams this result belongs to (see Bracket.resolve)
+      if (hasResult(s)) s["for"] = Bracket.pairKey(m); else delete s["for"];
+    }
+
+    updateMatchForm();
+    msg("dash-msg", "");
+    draw();
+  }
+
+  function clearResult() {
+    wipeResult(storedMatch(picked.match));
+    fillMatchEditor();
+    msg("dash-msg", "Result cleared.");
+    draw();
+  }
+
+  // before saving: drop results that no longer belong to the teams in the match
+  function tidyResults() {
+    resolved().forEach(function (m) {
+      var s = storedMatch(m.id);
+      if ((m.stale || !m.ready) && hasResult(s)) wipeResult(s);
+    });
+  }
+
+  /* ---------- saving ---------- */
+  function problemsBeforeSave(doc) {
+    if (doc === docs.teams) {
+      if (doc.data.some(function (t) { return !t.name; })) return "Every team needs a name before saving.";
+      for (var k = 0; k < doc.data.length; k++) {
+        var unnamed = doc.data[k].players.filter(function (p) { return !p.name; });
+        if (unnamed.some(function (p) { return p.jersey || p.position || p.goals || p.yellow || p.red; })) {
+          return doc.data[k].name + ": a player has details but no name.";
+        }
+      }
+      return "";
+    }
+    var list = resolved();
+    for (var i = 0; i < list.length; i++) {
+      var m = list[i], s = storedMatch(m.id);
+      if ((s.homeGoals === null) !== (s.awayGoals === null)) return "Match " + m.no + ": enter the goals for both teams.";
+      if (m.played && !m.winner) return "Match " + m.no + " ended level: enter the penalty shoot-out result (it cannot be a draw).";
+      if (m.played) {
+        var listed = function (id) { return m.scorers.filter(function (x) { return x.team === id; }).length; };
+        if (listed(m.home) > m.homeGoals || listed(m.away) > m.awayGoals) return "Match " + m.no + ": more scorers are listed than goals scored.";
+      }
+    }
+    return "";
   }
 
   async function save() {
-    var nameless = state.teams.filter(function (t) { return !t.name; });
-    if (nameless.length) return msg("dash-msg", "Every team needs a name before saving.", "error");
+    var doc = docs[active];
+    if (doc === docs.results) tidyResults();
+    var problem = problemsBeforeSave(doc);
+    if (problem) return msg("dash-msg", problem, "error");
+    if (doc === docs.teams) {                       // empty player rows are not saved
+      doc.data.forEach(function (t) { t.players = t.players.filter(function (p) { return p.name; }); });
+      if (picked.team >= 0) drawPlayerRows();
+    }
 
     $("save").disabled = true;
     msg("dash-msg", "Saving…");
+    var body = {
+      message: "Update " + doc.label + " (admin panel)",
+      content: b64(enc.encode(doc.header + JSON.stringify(doc.data, null, 2) + ";\n")),
+      branch: ADMIN_REPO.branch
+    };
+    if (doc.sha) body.sha = doc.sha;
+
     var res;
-    try {
-      res = await github("/contents/" + TEAMS_PATH, {
-        method: "PUT",
-        body: {
-          message: "Update teams (admin panel)",
-          content: b64(enc.encode(serialize())),
-          sha: state.sha,
-          branch: ADMIN_REPO.branch
-        }
-      });
-    } catch (e) {
-      drawTeams();
+    try { res = await github("/contents/" + doc.path, { method: "PUT", body: body }); }
+    catch (e) {
+      draw();
       return msg("dash-msg", "Could not reach GitHub. Your changes are still here – try Save again.", "error");
     }
     if (res.status === 401) { forgetToken(); show("view-connect"); return msg("connect-msg", explain(401), "error"); }
-    if (!res.ok) { drawTeams(); return msg("dash-msg", explain(res.status), "error"); }
+    if (!res.ok) { draw(); return msg("dash-msg", explain(res.status, doc), "error"); }
 
-    state.sha = res.data.content.sha;
-    state.saved = JSON.stringify(state.teams);
-    drawTeams();
+    doc.sha = res.data.content.sha;
+    doc.saved = JSON.stringify(doc.data);
+    if (doc === docs.results) fillMatchEditor();
+    draw();
     msg("dash-msg", "Saved. The website will show the changes in about a minute.", "ok");
+  }
+
+  function discard() {
+    var doc = docs[active];
+    doc.data = JSON.parse(doc.saved);
+    if (doc === docs.results) fillMatchEditor();
+    else if (picked.team >= 0) pickTeam(picked.team);
+    draw();
+    msg("dash-msg", "Changes discarded.");
   }
 
   /* ---------- screens ---------- */
@@ -300,39 +621,57 @@
     if (!res.ok) {
       return msg("connect-msg", res.status === 404
         ? "This token cannot see " + ADMIN_REPO.owner + "/" + ADMIN_REPO.repo + ". Check the repository access in step 2."
-        : explain(res.status), "error");
+        : explain(res.status, docs.teams), "error");
     }
     $("token").value = "";
     msg("connect-msg", "");
     session.token = token;
     await saveToken(token);
     show("view-dash");
-    loadTeams();
+    loadAll();
   });
 
   $("logout").addEventListener("click", function () {
-    if (isDirty() && !confirm("You have changes that are not saved. Log out anyway?")) return;
+    if (anyDirty() && !confirm("You have changes that are not saved. Log out anyway?")) return;
     session.key = null; session.token = null;
     forgetLogin();
-    state.teams = []; state.saved = ""; state.sha = null; state.selected = -1;
+    docs.teams = makeDoc(docs.teams.path, "TEAMS", "teams");
+    docs.results = makeDoc(docs.results.path, "MATCHES", "results");
+    active = "teams";
     $("admin-teams").textContent = "";
+    $("admin-bracket").textContent = "";
     $("editor").hidden = true;
     msg("dash-msg", "");
     show("view-login");
     $("pw1").focus();
   });
 
-  $("editor").addEventListener("input", readEditor);
+  Array.prototype.forEach.call(document.querySelectorAll(".dash-menu [data-panel]"), function (button) {
+    button.addEventListener("click", function () {
+      active = button.getAttribute("data-panel");
+      msg("dash-msg", "");
+      draw();                                   // the panel must be visible before the tree is measured
+      if (active === "results" && docs.results.loaded) { fillMatchEditor(); draw(); }
+    });
+  });
+
+  $("editor").addEventListener("input", readTeamEditor);
   $("editor").addEventListener("submit", function (e) { e.preventDefault(); });
+  $("m-editor").addEventListener("input", readMatchEditor);
+  $("m-editor").addEventListener("submit", function (e) { e.preventDefault(); });
+  $("f-add").addEventListener("click", addPlayer);
+  $("m-clear").addEventListener("click", clearResult);
   $("save").addEventListener("click", save);
-  $("discard").addEventListener("click", function () {
-    state.teams = JSON.parse(state.saved);
-    if (state.selected >= 0) select(state.selected); else drawTeams();
-    msg("dash-msg", "Changes discarded.");
+  $("discard").addEventListener("click", discard);
+
+  var resizeTimer;
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () { if (active === "results" && docs.results.loaded && !$("view-dash").hidden) drawResults(); }, 150);
   });
 
   window.addEventListener("beforeunload", function (e) {
-    if (session.token && isDirty()) { e.preventDefault(); e.returnValue = ""; }
+    if (session.token && anyDirty()) { e.preventDefault(); e.returnValue = ""; }
   });
 
   restoreLogin().then(function (ok) {

@@ -67,7 +67,7 @@
   /* ---------- Live data ----------
      Data files that the admin panel updates. They are loaded fresh on every
      visit (the ?t=... part stops the browser showing an old copy). */
-  var DATA_FILES = ["data/teams.js"];
+  var DATA_FILES = ["data/teams.js", "data/matches.js"];
 
   function loadData(done) {
     var left = DATA_FILES.length;
@@ -85,88 +85,62 @@
     var TEAMS = window.TEAMS || [];
     var teamById = {};
     TEAMS.forEach(function (t) { teamById[t.id] = t; });
-    function team(id) { return teamById[id] || { id: id, name: id, short: "?", group: "" }; }
+    function team(id) { return teamById[id] || { id: id, name: id, short: "?" }; }
+    function teamName(id) { return team(id).name; }
 
-    function isPlayed(m) { return m.homeGoals != null && m.awayGoals != null; }
-    function stamp(m) { return m.date + "T" + (m.time || "00:00"); }
+    // Every match of the knockout, with its teams and winner worked out (see js/bracket.js)
+    var MATCHES = Bracket.resolve(window.MATCHES || []);
+
+    // matches with a date come first, in date order; the rest follow in match-number order
+    function stamp(m) { return (m.date || "9999-99-99") + "T" + (m.time || "99:99") + "#" + String(100 + m.no); }
     function byDateAsc(a, b) { return stamp(a) < stamp(b) ? -1 : stamp(a) > stamp(b) ? 1 : 0; }
 
-    var played = MATCHES.filter(isPlayed).sort(byDateAsc).reverse();   // newest first
-    var upcoming = MATCHES.filter(function (m) { return !isPlayed(m); }).sort(byDateAsc);
+    var played = MATCHES.filter(function (m) { return m.played; }).sort(byDateAsc).reverse();   // newest first
+    var upcoming = MATCHES.filter(function (m) { return !m.played; }).sort(byDateAsc);
 
     function niceDate(m) {
+      if (!m.date) return m.time || "";
       var p = m.date.split("-");
       var d = new Date(+p[0], +p[1] - 1, +p[2]);
       var s = d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
       return m.time ? s + " · " + m.time : s;
     }
 
+    function side(m, slot) {
+      var id = slot === 0 ? m.home : m.away;
+      var cls = slot === 0 ? "home" : "away";
+      if (!id) return '<span class="' + cls + ' tbd">' + esc(Bracket.waitingFor(m, slot)) + "</span>";
+      return '<span class="' + cls + (m.winner === id ? " winner" : "") + '">' + esc(teamName(id)) + "</span>";
+    }
+
     function matchCard(m) {
-      var done = isPlayed(m);
-      var mid = done
+      var mid = m.played
         ? '<span class="score">' + esc(m.homeGoals) + " – " + esc(m.awayGoals) + "</span>"
         : '<span class="score vs">VS</span>';
-      var scorers = "";
-      if (done && m.scorers && m.scorers.length) {
-        scorers = '<div class="scorers">⚽ ' + m.scorers.map(function (s) {
-          return esc(s.player) + " (" + esc(team(s.team).name) + (s.minute ? ", " + esc(s.minute) + "'" : "") + ")";
+      var extra = "";
+      if (m.played && m.homePens !== null && m.awayPens !== null) {
+        extra += '<div class="scorers">Penalties ' + esc(m.homePens) + " – " + esc(m.awayPens) + "</div>";
+      }
+      if (m.played && m.scorers.length) {
+        extra += '<div class="scorers">⚽ ' + m.scorers.map(function (s) {
+          return esc(s.player) + " (" + esc(teamName(s.team)) + (s.minute ? ", " + esc(s.minute) + "'" : "") + ")";
         }).join(" · ") + "</div>";
       }
+      var when = ["Match " + m.no, niceDate(m), m.venue].filter(Boolean).map(esc).join(" · ");
       return '<div class="card match">' +
-        '<div class="info"><span>' + esc(niceDate(m)) + (m.venue ? " · " + esc(m.venue) : "") + "</span>" +
-        '<span class="badge' + (done ? "" : " alt") + '">' + esc(m.stage || "") + "</span></div>" +
-        '<div class="row"><span class="home">' + esc(team(m.home).name) + "</span>" + mid +
-        '<span class="away">' + esc(team(m.away).name) + "</span></div>" + scorers + "</div>";
+        '<div class="info"><span>' + when + "</span>" +
+        '<span class="badge' + (m.played ? "" : " alt") + '">' + esc(m.roundName) + "</span></div>" +
+        '<div class="row">' + side(m, 0) + mid + side(m, 1) + "</div>" + extra + "</div>";
     }
 
     function matchList(list, emptyText) {
       return list.length ? list.map(matchCard).join("") : '<div class="card empty">' + emptyText + "</div>";
     }
 
-    function groups() {
-      var seen = [];
-      TEAMS.forEach(function (t) { if (seen.indexOf(t.group) < 0) seen.push(t.group); });
-      return seen.sort();
-    }
-
-    function standings(group) {
-      var rows = {};
-      TEAMS.filter(function (t) { return t.group === group; }).forEach(function (t) {
-        rows[t.id] = { team: t, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, pts: 0 };
-      });
-      played.forEach(function (m) {
-        if (m.stage !== "Group " + group) return;
-        var h = rows[m.home], a = rows[m.away];
-        if (!h || !a) return;
-        h.p++; a.p++;
-        h.gf += m.homeGoals; h.ga += m.awayGoals;
-        a.gf += m.awayGoals; a.ga += m.homeGoals;
-        if (m.homeGoals > m.awayGoals) { h.w++; a.l++; h.pts += 3; }
-        else if (m.homeGoals < m.awayGoals) { a.w++; h.l++; a.pts += 3; }
-        else { h.d++; a.d++; h.pts++; a.pts++; }
-      });
-      return Object.keys(rows).map(function (k) { return rows[k]; }).sort(function (x, y) {
-        return (y.pts - x.pts) || ((y.gf - y.ga) - (x.gf - x.ga)) || (y.gf - x.gf) ||
-          x.team.name.localeCompare(y.team.name);
-      });
-    }
-
-    function standingsTable(group) {
-      var body = standings(group).map(function (r, i) {
-        var gd = r.gf - r.ga;
-        return "<tr><td>" + (i + 1) + "</td><td>" + esc(r.team.name) + "</td><td>" + r.p + "</td><td>" + r.w +
-          "</td><td>" + r.d + "</td><td>" + r.l + "</td><td>" + r.gf + "</td><td>" + r.ga + "</td><td>" +
-          (gd > 0 ? "+" + gd : gd) + '</td><td class="pts">' + r.pts + "</td></tr>";
-      }).join("");
-      return '<h2 class="section-title">Group ' + esc(group) + " – Points Table</h2>" +
-        '<div class="table-wrap"><table><thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th>' +
-        "<th>GF</th><th>GA</th><th>GD</th><th>Pts</th></tr></thead><tbody>" + body + "</tbody></table></div>";
-    }
-
     function topScorers() {
       var tally = {};
       played.forEach(function (m) {
-        (m.scorers || []).forEach(function (s) {
+        m.scorers.forEach(function (s) {
           var key = s.player + "|" + s.team;
           tally[key] = tally[key] || { player: s.player, team: s.team, goals: 0 };
           tally[key].goals++;
@@ -179,13 +153,13 @@
 
     // one team's record over every match it has played
     function teamRecord(id) {
-      var r = { p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0 };
+      var r = { p: 0, w: 0, l: 0, gf: 0, ga: 0 };
       played.forEach(function (m) {
         if (m.home !== id && m.away !== id) return;
-        var mine = m.home === id ? m.homeGoals : m.awayGoals;
-        var theirs = m.home === id ? m.awayGoals : m.homeGoals;
-        r.p++; r.gf += mine; r.ga += theirs;
-        if (mine > theirs) r.w++; else if (mine < theirs) r.l++; else r.d++;
+        r.p++;
+        r.gf += m.home === id ? m.homeGoals : m.awayGoals;
+        r.ga += m.home === id ? m.awayGoals : m.homeGoals;
+        if (m.winner === id) r.w++; else if (m.loser === id) r.l++;
       });
       return r;
     }
@@ -201,15 +175,25 @@
       }).join("");
     }
 
+    // the knockout tree; redrawn when the screen size changes so it always fits
+    function drawBracket() {
+      var el = $("home-bracket");
+      if (!el) return;
+      Bracket.render(el, MATCHES, {
+        name: teamName,
+        href: function (id) { return "team.html?id=" + encodeURIComponent(id); }
+      });
+    }
+
     /* ---------- Pages ---------- */
     var pages = {
       home: function () {
         var t = totals();
         fill("hero-title", esc(SITE.title));
-        fill("hero-tagline", esc(SITE.tagline));
+        drawBracket();
+        var timer;
+        window.addEventListener("resize", function () { clearTimeout(timer); timer = setTimeout(drawBracket, 150); });
         fill("home-stats", statCards([[t.teams, "Teams"], [t.matches, "Matches"], [t.played, "Played"], [t.goals, "Goals"]]));
-        fill("home-fixtures", matchList(upcoming.slice(0, 2), "No upcoming matches."));
-        fill("home-results", matchList(played.slice(0, 2), "No results yet."));
       },
 
       teams: function () {
@@ -229,7 +213,17 @@
         document.title = t.name + " | " + SITE.title;
         var r = teamRecord(t.id);
         var mine = function (m) { return m.home === t.id || m.away === t.id; };
-        var players = t.players || [];
+        // players may be plain names (older data) or full details
+        var players = (t.players || []).map(function (pl) {
+          return typeof pl === "string" ? { name: pl } : (pl || {});
+        }).filter(function (pl) { return pl.name; });
+        var dash = '<span class="muted">–</span>';
+        var text = function (v) { return v === undefined || v === null || v === "" ? dash : esc(v); };
+        var count = function (v) { return esc(Number(v) || 0); };
+        // column heading with a short form for phones (css shows one or the other)
+        var head = function (full, brief) {
+          return '<th><span class="long">' + full + '</span><abbr class="brief" title="' + full + '">' + brief + "</abbr></th>";
+        };
         // a section only appears when the team has something to show in it
         var section = function (title, list) {
           return list.length
@@ -241,15 +235,28 @@
           '<a class="back" href="teams.html">← Teams</a>' +
           '<div class="team-head"><div class="crest">' + esc(t.short) + "</div><div>" +
             '<h1 class="page-title">' + esc(t.name) + "</h1>" +
-            '<div class="muted">Group ' + esc(t.group) + (t.area ? " · " + esc(t.area) : "") + "</div>" +
           "</div></div>" +
           '<div class="grid stats record">' +
-            statCards([[r.p, "Played"], [r.w, "Won"], [r.d, "Drawn"], [r.l, "Lost"], [r.gf, "Goals for"], [r.ga, "Goals against"]]) +
+            statCards([[r.p, "Played"], [r.w, "Won"], [r.l, "Lost"], [r.gf, "Goals for"], [r.ga, "Goals against"]]) +
           "</div>" +
+
+          '<h2 class="section-title">Team Details</h2>' +
+          '<div class="table-wrap"><table class="details"><tbody>' +
+            "<tr><th>Team Name</th><td>" + text(t.name) + "</td></tr>" +
+            "<tr><th>Manager</th><td>" + text(t.manager) + "</td></tr>" +
+            "<tr><th>Address</th><td>" + text(t.address || t.area) + "</td></tr>" +
+          "</tbody></table></div>" +
+
+          '<h2 class="section-title">Players</h2>' +
           (players.length
-            ? '<h2 class="section-title">Squad</h2><ul class="squad">' +
-              players.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("") + "</ul>"
-            : "") +
+            ? '<div class="table-wrap"><table class="players"><thead><tr><th>Name</th>' + head("Jersey No.", "No.") + "<th>Position</th>" +
+              "<th>Goals</th>" + head("Yellow Card", "YC") + head("Red Card", "RC") + "</tr></thead><tbody>" +
+              players.map(function (pl) {
+                return "<tr><td>" + esc(pl.name) + "</td><td>" + text(pl.jersey) + "</td><td>" + text(pl.position) +
+                  '</td><td class="pts">' + count(pl.goals) + "</td><td>" + count(pl.yellow) + "</td><td>" + count(pl.red) + "</td></tr>";
+              }).join("") + "</tbody></table></div>"
+            : '<div class="card empty">No players added yet.</div>') +
+
           section("Fixtures", upcoming.filter(mine)) +
           section("Results", played.filter(mine)));
       },
@@ -266,13 +273,12 @@
         var t = totals();
         var avg = t.played ? (t.goals / t.played).toFixed(2) : "0";
         fill("stats-summary", statCards([[t.played, "Matches played"], [t.goals, "Goals scored"], [avg, "Goals per match"], [t.teams, "Teams"]]));
-        fill("stats-tables", groups().map(standingsTable).join(""));
 
         var scorers = topScorers().slice(0, 10);
         fill("stats-scorers", scorers.length
           ? '<div class="table-wrap"><table><thead><tr><th>#</th><th>Player</th><th>Team</th><th>Goals</th></tr></thead><tbody>' +
             scorers.map(function (s, i) {
-              return "<tr><td>" + (i + 1) + "</td><td>" + esc(s.player) + "</td><td>" + esc(team(s.team).name) +
+              return "<tr><td>" + (i + 1) + "</td><td>" + esc(s.player) + "</td><td>" + esc(teamName(s.team)) +
                 '</td><td class="pts">' + s.goals + "</td></tr>";
             }).join("") + "</tbody></table></div>"
           : '<div class="card empty">No goals recorded yet.</div>');

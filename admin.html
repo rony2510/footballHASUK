@@ -64,11 +64,12 @@
       <section class="dash" id="view-dash" hidden>
         <nav class="dash-menu" aria-label="Admin sections">
           <button class="active" type="button" data-panel="teams">Teams</button>
+          <button type="button" data-panel="results">Results</button>
         </nav>
 
         <div class="dash-body">
           <div class="dash-head">
-            <h1>Teams</h1>
+            <h1 id="dash-title">Teams</h1>
             <div class="dash-actions">
               <button class="btn small outline" id="discard" type="button" disabled>Discard</button>
               <button class="btn small" id="save" type="button" disabled>Save to website</button>
@@ -76,39 +77,120 @@
           </div>
           <p class="msg" id="dash-msg" role="status"></p>
 
-          <div class="team-grid" id="admin-teams"></div>
+          <!-- Teams -->
+          <div id="panel-teams">
+            <div class="team-grid" id="admin-teams"></div>
 
-          <form class="card editor" id="editor" hidden autocomplete="off">
-            <h2 id="editor-title"></h2>
-            <div class="fields">
-              <div>
-                <label for="f-name">Team name</label>
-                <input type="text" id="f-name" maxlength="80" required>
+            <form class="card editor" id="editor" hidden autocomplete="off">
+              <h2>Edit team</h2>
+              <div class="fields">
+                <div>
+                  <label for="f-name">Team name</label>
+                  <input type="text" id="f-name" maxlength="80" required>
+                </div>
+                <div>
+                  <label for="f-short">Short name (2–3 letters)</label>
+                  <input type="text" id="f-short" maxlength="4">
+                </div>
+                <div>
+                  <label for="f-manager">Manager name</label>
+                  <input type="text" id="f-manager" maxlength="80">
+                </div>
+                <div>
+                  <label for="f-address">Address</label>
+                  <input type="text" id="f-address" maxlength="120">
+                </div>
+                <div class="full">
+                  <label id="l-players">Players</label>
+                  <div class="table-wrap players-edit">
+                    <table aria-labelledby="l-players">
+                      <thead>
+                        <tr><th>Name</th><th>Jersey No.</th><th>Position</th><th>Goals</th><th>Yellow</th><th>Red</th><th></th></tr>
+                      </thead>
+                      <tbody id="f-players"></tbody>
+                    </table>
+                  </div>
+                  <button class="btn small outline" id="f-add" type="button">+ Add player</button>
+                  <datalist id="positions">
+                    <option value="Goalkeeper"></option>
+                    <option value="Defender"></option>
+                    <option value="Midfielder"></option>
+                    <option value="Forward"></option>
+                  </datalist>
+                </div>
               </div>
-              <div>
-                <label for="f-short">Short name (2–3 letters)</label>
-                <input type="text" id="f-short" maxlength="4">
+            </form>
+          </div>
+
+          <!-- Results: the knockout tree. Click a match, type its result, save. -->
+          <div id="panel-results" hidden>
+            <div class="bracket-scroll" id="admin-bracket"></div>
+
+            <form class="card editor wide" id="m-editor" autocomplete="off">
+              <h2 id="m-title"></h2>
+              <div class="fields">
+                <div class="full">
+                  <label for="m-pick">Match</label>
+                  <select id="m-pick"></select>
+                </div>
+                <div>
+                  <label for="m-home">Team 1</label>
+                  <select id="m-home"></select>
+                </div>
+                <div>
+                  <label for="m-away">Team 2</label>
+                  <select id="m-away"></select>
+                </div>
+                <div>
+                  <label for="m-date">Date</label>
+                  <input type="date" id="m-date">
+                </div>
+                <div>
+                  <label for="m-time">Time</label>
+                  <input type="time" id="m-time">
+                </div>
+                <div class="full">
+                  <label for="m-venue">Venue</label>
+                  <input type="text" id="m-venue" maxlength="80">
+                </div>
+                <div>
+                  <label for="m-hg" id="l-hg">Goals</label>
+                  <input type="number" id="m-hg" min="0" max="99" step="1" inputmode="numeric">
+                </div>
+                <div>
+                  <label for="m-ag" id="l-ag">Goals</label>
+                  <input type="number" id="m-ag" min="0" max="99" step="1" inputmode="numeric">
+                </div>
+                <div class="full fields" id="pens" hidden>
+                  <div>
+                    <label for="m-hp" id="l-hp">Penalties</label>
+                    <input type="number" id="m-hp" min="0" max="99" step="1" inputmode="numeric">
+                  </div>
+                  <div>
+                    <label for="m-ap" id="l-ap">Penalties</label>
+                    <input type="number" id="m-ap" min="0" max="99" step="1" inputmode="numeric">
+                  </div>
+                </div>
+                <div>
+                  <label for="m-hs" id="l-hs">Scorers</label>
+                  <textarea id="m-hs" rows="4" placeholder="One per line, e.g. Rahim 23"></textarea>
+                </div>
+                <div>
+                  <label for="m-as" id="l-as">Scorers</label>
+                  <textarea id="m-as" rows="4" placeholder="One per line, e.g. Rahim 23"></textarea>
+                </div>
               </div>
-              <div>
-                <label for="f-group">Group</label>
-                <select id="f-group"></select>
-              </div>
-              <div>
-                <label for="f-area">Area</label>
-                <input type="text" id="f-area" maxlength="80">
-              </div>
-              <div class="full">
-                <label for="f-players">Players (one name per line)</label>
-                <textarea id="f-players" rows="8"></textarea>
-              </div>
-            </div>
-          </form>
+              <p class="msg" id="m-note"></p>
+              <button class="btn small outline" id="m-clear" type="button">Clear result</button>
+            </form>
+          </div>
         </div>
       </section>
 
     </div>
   </main>
 
+  <script src="js/bracket.js"></script>
   <script src="js/admin-config.js"></script>
   <script src="js/admin.js"></script>
 </body>

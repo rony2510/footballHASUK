@@ -52,6 +52,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--mint); outl
 }
 .dash-menu button:hover { background: var(--card); }
 .dash-menu button.active { background: var(--teal); color: var(--mint); }
+.dash-menu button.unsaved::after { content: " •"; color: var(--green); }
 
 .dash-body { min-width: 0; }
 .dash-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
@@ -60,14 +61,49 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--mint); outl
 #dash-msg { margin: 8px 0 16px; }
 
 .dash .team-grid { margin: 0; max-width: 620px; }
-button.team-tile { cursor: pointer; font-family: inherit; }
+button.team-tile { cursor: pointer; font-family: inherit; font-size: clamp(0.78rem, 2.9vw, 1.05rem); }
 .team-tile.selected { background: var(--teal); border-color: var(--mint); color: var(--mint); }
 .team-tile.changed { border-color: var(--green); border-style: dashed; }
 
 .editor { margin-top: 18px; max-width: 620px; padding: 18px; }
 .editor h2 { margin: 0; font-size: 1.15rem; }
+.editor.wide { max-width: 760px; margin-top: 0; }
+#editor { max-width: 760px; }                /* room for the players table */
+.editor .btn { margin-top: 14px; }
+input:disabled, select:disabled, textarea:disabled { opacity: 0.55; cursor: not-allowed; }
+#m-note { margin-top: 10px; }
+
+/* players table inside the team form */
+.players-edit { background: transparent; }
+.players-edit table { min-width: 600px; }
+.players-edit th, .players-edit td { padding: 6px 4px; border-bottom: 0; }
+.players-edit th { background: transparent; color: var(--muted); text-align: left; padding-left: 8px; }
+.players-edit input { padding: 8px 8px; }
+.players-edit td:nth-child(1) { min-width: 150px; }
+.players-edit td:nth-child(3) { min-width: 120px; }
+.players-edit td:nth-child(2), .players-edit td:nth-child(4), .players-edit td:nth-child(5), .players-edit td:nth-child(6) { width: 74px; }
+.players-edit .remove {
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: #ff9c9c;
+  cursor: pointer;
+  font: inherit;
+  width: 38px;
+  height: 38px;
+}
+.players-edit .remove:hover { border-color: #ff9c9c; }
+.players-edit .none { color: var(--muted); text-align: left; padding: 10px 8px; }
+
+/* the tree is the match picker in the admin panel */
+.dash .bracket-scroll { margin-bottom: 18px; }
+.dash .bk-match { cursor: pointer; }
+.dash .bk-match:hover, .dash .bk-match:focus-visible { border-color: var(--mint); outline: none; }
+.dash .bk-match.selected { border-color: var(--mint); box-shadow: 0 0 0 2px var(--mint); }
 .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
 .fields .full { grid-column: 1 / -1; }
+.fields > * { min-width: 0; }            /* lets the players table scroll inside the form on phones */
+.editor { min-width: 0; }
 
 @media (max-width: 760px) {
   .dash { grid-template-columns: 1fr; gap: 14px; }
