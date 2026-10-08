@@ -135,17 +135,46 @@ window.MATCHES = [
   },
   {
     "id": "m6",
-    "date": "",
-    "time": "",
-    "venue": "",
-    "homeGoals": null,
-    "awayGoals": null,
+    "date": "2026-10-17",
+    "time": "10:20",
+    "venue": "KMMMM",
+    "homeGoals": 3,
+    "awayGoals": 5,
     "homePens": null,
     "awayPens": null,
-    "scorers": [],
-    "cards": [],
+    "scorers": [
+      {
+        "player": "A",
+        "team": "k",
+        "minute": 11
+      },
+      {
+        "player": "B",
+        "team": "l",
+        "minute": null
+      }
+    ],
+    "cards": [
+      {
+        "player": "C",
+        "team": "k",
+        "minute": null,
+        "type": "yellow"
+      },
+      {
+        "player": "D",
+        "team": "l",
+        "minute": null,
+        "type": "red"
+      }
+    ],
     "home": "k",
-    "away": "l"
+    "away": "l",
+    "for": "k|l",
+    "potm": {
+      "player": "G",
+      "team": "l"
+    }
   },
   {
     "id": "m7",
