@@ -256,7 +256,7 @@ window.TEAMS = [
   },
   {
     "id": "n",
-    "name": "G2",
+    "name": "Shreepur FC",
     "short": "N",
     "group": "D",
     "players": [],
