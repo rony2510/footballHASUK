@@ -215,8 +215,8 @@ window.TEAMS = [
     "short": "",
     "group": "C",
     "players": [],
-    "manager": "",
-    "address": ""
+    "manager": "Bivas Hajong",
+    "address": "Nayankandi,Kalmakanda,Netrakona"
   },
   {
     "id": "j",
