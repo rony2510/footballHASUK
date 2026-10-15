@@ -202,7 +202,7 @@ window.TEAMS = [
   },
   {
     "id": "h",
-    "name": "D2",
+    "name": "Chondrodinga FC",
     "short": "",
     "group": "B",
     "players": [],
