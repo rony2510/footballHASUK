@@ -10,43 +10,10 @@
 window.TEAMS = [
   {
     "id": "a",
-    "name": "Team Barcelona",
+    "name": "A",
     "short": "",
     "group": "A",
-    "players": [
-      {
-        "name": "Lamine Yamal",
-        "jersey": "10",
-        "position": "Forward",
-        "goals": 1,
-        "yellow": 0,
-        "red": 0
-      },
-      {
-        "name": "Cubarsi",
-        "jersey": "9",
-        "position": "Defender",
-        "goals": 0,
-        "yellow": 1,
-        "red": 0
-      },
-      {
-        "name": "RL",
-        "jersey": "3",
-        "position": "Forward",
-        "goals": 0,
-        "yellow": 0,
-        "red": 1
-      },
-      {
-        "name": "Pedri",
-        "jersey": "2",
-        "position": "Midfielder",
-        "goals": 0,
-        "yellow": 0,
-        "red": 0
-      }
-    ],
+    "players": [],
     "manager": "",
     "address": ""
   },
