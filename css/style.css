@@ -132,6 +132,9 @@ main { flex: 1; padding: 28px 0 48px; }
   font-size: 1.1rem;
   line-height: 1.9;
 }
+/* prize money lines: as large as a heading, in gold so they stand out */
+.hero-info .prize { font-weight: 700; font-size: 1.6rem; line-height: 1.5; color: #ffd166; }
+.hero-info .prize.first { margin-top: 14px; }
 .hero p { margin: 0 auto; max-width: 640px; color: var(--mint); font-size: 1.05rem; }
 [hidden] { display: none !important; }
 /* countdown to kick-off */
@@ -616,6 +619,7 @@ table.card-stats th .card-mark { vertical-align: -2px; }
   .bracket-scroll { margin-bottom: 18px; padding: 12px 8px 14px; }
   .bk-row { padding: 0 6px; font-size: 0.74rem; }
   .hero p { font-size: 1rem; }
+  .hero-info .prize { font-size: 1.25rem; }
   .countdown { gap: 8px; margin-top: 34px; }
   .cd-box { width: 25%; max-width: 84px; padding: 10px 2px 9px; border-radius: 14px; }
   .cd-num { font-size: 1.6rem; }
