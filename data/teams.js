@@ -19,12 +19,12 @@ window.TEAMS = [
   },
   {
     "id": "b",
-    "name": "A2",
+    "name": "Guragaw Hajong FC",
     "short": "",
     "group": "A",
     "players": [],
-    "manager": "",
-    "address": ""
+    "manager": "Prodip Hajong",
+    "address": "Guragaw, Lengura, Kalmakanda"
   },
   {
     "id": "c",
