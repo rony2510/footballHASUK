@@ -166,7 +166,7 @@ window.TEAMS = [
   },
   {
     "id": "d",
-    "name": "B2",
+    "name": "Rajai FC",
     "short": "",
     "group": "A",
     "players": [],
