@@ -37,8 +37,8 @@ window.TEAMS = [
   },
   {
     "id": "d",
-    "name": "Team D",
-    "short": "D",
+    "name": "D",
+    "short": "",
     "group": "A",
     "players": [],
     "manager": "",
