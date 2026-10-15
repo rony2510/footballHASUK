@@ -238,7 +238,7 @@ window.TEAMS = [
   },
   {
     "id": "l",
-    "name": "F2",
+    "name": "Hajong FC Tonggi",
     "short": "",
     "group": "C",
     "players": [],
