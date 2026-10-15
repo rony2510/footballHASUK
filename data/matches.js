@@ -95,47 +95,15 @@ window.MATCHES = [
     "id": "m7",
     "date": "",
     "time": "",
-    "venue": "Fulbari, Kalmakanda, Netrakona",
-    "homeGoals": 1,
-    "awayGoals": 1,
-    "homePens": 3,
-    "awayPens": 4,
+    "venue": "Gobindapur School Field, Kalmakanda Netrokona",
+    "homeGoals": null,
+    "awayGoals": null,
+    "homePens": null,
+    "awayPens": null,
     "scorers": [],
-    "cards": [
-      {
-        "player": "Nunu",
-        "team": "m",
-        "minute": null,
-        "type": "red"
-      },
-      {
-        "player": "Haaland",
-        "team": "m",
-        "minute": null,
-        "type": "red"
-      },
-      {
-        "player": "Rodri",
-        "team": "m",
-        "minute": null,
-        "type": "red"
-      },
-      {
-        "player": "Cr",
-        "team": "n",
-        "minute": 7,
-        "type": "red"
-      },
-      {
-        "player": "Backham",
-        "team": "n",
-        "minute": 10,
-        "type": "red"
-      }
-    ],
+    "cards": [],
     "home": "m",
-    "away": "n",
-    "for": "m|n"
+    "away": "n"
   },
   {
     "id": "m8",
