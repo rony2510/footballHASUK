@@ -28,12 +28,141 @@ window.TEAMS = [
   },
   {
     "id": "c",
-    "name": "B1",
+    "name": "Gopalbari FC",
     "short": "",
     "group": "A",
-    "players": [],
-    "manager": "",
-    "address": ""
+    "players": [
+      {
+        "name": "Suvradeb Hajong",
+        "jersey": "10",
+        "position": "Midfielder",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Sagor Hajong",
+        "jersey": "7",
+        "position": "Forward",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Sushanto Hajong",
+        "jersey": "12",
+        "position": "Forward",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Rahul Hajong",
+        "jersey": "11",
+        "position": "Forward",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Shuvo Hajong",
+        "jersey": "5",
+        "position": "Defender",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Sudipto Hajong",
+        "jersey": "4",
+        "position": "Defender",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Gopal Hajong",
+        "jersey": "3",
+        "position": "Defender",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Ronaldo Hajong",
+        "jersey": "2",
+        "position": "Defender",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Supto Hajong",
+        "jersey": "6",
+        "position": "Defender",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Surov Hajong",
+        "jersey": "01",
+        "position": "Goalkeeper",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Badhon Hajong",
+        "jersey": "00",
+        "position": "Goalkeeper",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Surov Hajong",
+        "jersey": "12",
+        "position": "Midfielder",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Hrittik Hajong",
+        "jersey": "14",
+        "position": "Forward",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Manobendra Hajong",
+        "jersey": "15",
+        "position": "Defender",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Sottojit Hajong",
+        "jersey": "15",
+        "position": "Forward",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Klington Hajong",
+        "jersey": "16",
+        "position": "Defender",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      }
+    ],
+    "manager": "Alik Hajong Tutul",
+    "address": "Gopalbari Chengni, Kalmakanda, Netrakona."
   },
   {
     "id": "d",
