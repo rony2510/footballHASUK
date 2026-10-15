@@ -220,7 +220,7 @@ window.TEAMS = [
   },
   {
     "id": "j",
-    "name": "E2",
+    "name": "Shomeshwari Hajong FC",
     "short": "",
     "group": "C",
     "players": [],
