@@ -1396,8 +1396,185 @@ window.TEAMS = [
     "name": "Defuliyapara FC",
     "short": "P",
     "group": "D",
-    "players": [],
-    "manager": "",
+    "players": [
+      {
+        "name": "Shrabon Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Bishwa Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Shakib Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Nibes Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Anjon Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Digonto Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Tronik Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Rittik Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Ashik Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Bondhon Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Tutul Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Sani Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Orpon Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Podmo Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Sujon Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Rupok Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Pronoy Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Apurbo Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Showrab Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Sajon Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Ashim Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Ronit Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      }
+    ],
+    "manager": "Birshwa Hajong",
     "address": ""
   }
 ];
