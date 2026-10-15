@@ -214,7 +214,16 @@ window.TEAMS = [
     "name": "Nayankandi FC",
     "short": "",
     "group": "C",
-    "players": [],
+    "players": [
+      {
+        "name": "Sumit Hajong",
+        "jersey": "",
+        "position": "Goalkeeper",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      }
+    ],
     "manager": "Bivas Hajong",
     "address": "Nayankandi,Kalmakanda,Netrakona"
   },
