@@ -222,10 +222,18 @@ window.TEAMS = [
         "goals": 0,
         "yellow": 0,
         "red": 0
+      },
+      {
+        "name": "Gobindo Hajong",
+        "jersey": "00",
+        "position": "Midfielder",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
       }
     ],
     "manager": "Bivas Hajong",
-    "address": "Nayankandi,Kalmakanda,Netrakona"
+    "address": "Nayankandi, Lengura, Kalmakanda,Netrakona"
   },
   {
     "id": "j",
