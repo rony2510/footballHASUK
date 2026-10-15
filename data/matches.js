@@ -25,7 +25,7 @@ window.MATCHES = [
     "id": "m2",
     "date": "",
     "time": "",
-    "venue": "Gobindapur School Field",
+    "venue": "Gobindapur School Field, Kalmakanda Netrokona",
     "homeGoals": null,
     "awayGoals": null,
     "homePens": null,
