@@ -247,7 +247,7 @@ window.TEAMS = [
   },
   {
     "id": "m",
-    "name": "G1",
+    "name": "Gopalpur FC",
     "short": "",
     "group": "D",
     "players": [],
