@@ -265,7 +265,7 @@ window.TEAMS = [
   },
   {
     "id": "o",
-    "name": "H1",
+    "name": "Ranigaw Brothers FC",
     "short": "",
     "group": "D",
     "players": [],
