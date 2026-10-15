@@ -590,9 +590,146 @@ window.TEAMS = [
     "name": "Ranigaw Brothers FC",
     "short": "",
     "group": "D",
-    "players": [],
-    "manager": "",
-    "address": ""
+    "players": [
+      {
+        "name": "Gobindo Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Gopal Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Roni Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Pollad Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Dipu hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Ovijit Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Dipto Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Suronjit Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Sonjoy Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Arjun Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Shankar Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Kishor Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Amit Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Nobogit Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Prosenjit Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Joyonto Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Shuvro Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      }
+    ],
+    "manager": "Indrojit Hajong",
+    "address": "Ranigaw, Hat Gobindopur, Kalmakanda"
   },
   {
     "id": "p",
