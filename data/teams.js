@@ -229,7 +229,7 @@ window.TEAMS = [
   },
   {
     "id": "k",
-    "name": "F1",
+    "name": "Lalghat FC",
     "short": "",
     "group": "C",
     "players": [],
