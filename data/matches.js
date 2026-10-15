@@ -33,7 +33,7 @@ window.MATCHES = [
     "scorers": [],
     "cards": [],
     "home": "c",
-    "away": "p"
+    "away": "d"
   },
   {
     "id": "m3",
@@ -234,7 +234,7 @@ window.MATCHES = [
     "scorers": [],
     "cards": [],
     "home": "o",
-    "away": "d"
+    "away": "p"
   },
   {
     "id": "q1",
