@@ -11,7 +11,7 @@ window.MATCHES = [
     "id": "m1",
     "date": "",
     "time": "",
-    "venue": "Gobindapur School Field.",
+    "venue": "Gobindapur School Field",
     "homeGoals": null,
     "awayGoals": null,
     "homePens": null,
@@ -19,7 +19,7 @@ window.MATCHES = [
     "scorers": [],
     "cards": [],
     "home": "a",
-    "away": "p"
+    "away": "b"
   },
   {
     "id": "m2",
@@ -33,7 +33,7 @@ window.MATCHES = [
     "scorers": [],
     "cards": [],
     "home": "c",
-    "away": "b"
+    "away": "p"
   },
   {
     "id": "m3",
