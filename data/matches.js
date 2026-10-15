@@ -9,7 +9,7 @@
 window.MATCHES = [
   {
     "id": "m1",
-    "date": "",
+    "date": "2026-10-17",
     "time": "",
     "venue": "Gobindapur School Field, Kalmakanda Netrokona",
     "homeGoals": null,
