@@ -9,9 +9,9 @@
 window.MATCHES = [
   {
     "id": "m1",
-    "date": "",
-    "time": "",
-    "venue": "",
+    "date": "2026-10-17",
+    "time": "09:20",
+    "venue": "Gobindapur School Field, Kalmakanda Netrokona",
     "homeGoals": null,
     "awayGoals": null,
     "homePens": null,
@@ -19,13 +19,13 @@ window.MATCHES = [
     "scorers": [],
     "cards": [],
     "home": "a",
-    "away": "p"
+    "away": "b"
   },
   {
     "id": "m2",
-    "date": "",
-    "time": "",
-    "venue": "",
+    "date": "2026-10-17",
+    "time": "12:20",
+    "venue": "Gobindapur School Field, Kalmakanda Netrokona",
     "homeGoals": null,
     "awayGoals": null,
     "homePens": null,
@@ -33,97 +33,41 @@ window.MATCHES = [
     "scorers": [],
     "cards": [],
     "home": "c",
-    "away": "b"
+    "away": "d"
   },
   {
     "id": "m3",
     "date": "2026-10-17",
-    "time": "11:30",
-    "venue": "",
-    "homeGoals": 1,
-    "awayGoals": 0,
+    "time": "",
+    "venue": "Gobindapur School Field, Kalmakanda Netrokona",
+    "homeGoals": null,
+    "awayGoals": null,
     "homePens": null,
     "awayPens": null,
     "scorers": [],
     "cards": [],
     "home": "e",
-    "away": "f",
-    "for": "e|f"
+    "away": "f"
   },
   {
     "id": "m4",
     "date": "2026-10-17",
-    "time": "09:30",
-    "venue": "Fulbari, Kalmakanda, Netrakona",
-    "homeGoals": 3,
-    "awayGoals": 5,
+    "time": "08:40",
+    "venue": "Gobindapur School Field, Kalmakanda Netrokona",
+    "homeGoals": null,
+    "awayGoals": null,
     "homePens": null,
     "awayPens": null,
-    "scorers": [
-      {
-        "player": "Messi",
-        "team": "g",
-        "minute": 10
-      },
-      {
-        "player": "Messi",
-        "team": "g",
-        "minute": 10
-      },
-      {
-        "player": "Messi",
-        "team": "g",
-        "minute": 10
-      },
-      {
-        "player": "Ronaldo",
-        "team": "h",
-        "minute": 7
-      },
-      {
-        "player": "Ronaldo",
-        "team": "h",
-        "minute": 7
-      },
-      {
-        "player": "Ronaldo",
-        "team": "h",
-        "minute": 7
-      },
-      {
-        "player": "Ronaldo",
-        "team": "h",
-        "minute": 7
-      },
-      {
-        "player": "Ronaldo",
-        "team": "h",
-        "minute": 7
-      }
-    ],
-    "cards": [
-      {
-        "player": "A",
-        "team": "g",
-        "minute": null,
-        "type": "yellow"
-      },
-      {
-        "player": "B",
-        "team": "h",
-        "minute": null,
-        "type": "yellow"
-      }
-    ],
+    "scorers": [],
+    "cards": [],
     "home": "g",
-    "away": "h",
-    "for": "g|h"
+    "away": "h"
   },
   {
     "id": "m5",
     "date": "2026-10-17",
-    "time": "12:30",
-    "venue": "",
+    "time": "08:00",
+    "venue": "Gobindapur School Field, Kalmakanda Netrokona",
     "homeGoals": null,
     "awayGoals": null,
     "homePens": null,
@@ -135,9 +79,9 @@ window.MATCHES = [
   },
   {
     "id": "m6",
-    "date": "",
-    "time": "",
-    "venue": "",
+    "date": "2026-10-17",
+    "time": "11:20",
+    "venue": "Gobindapur School Field, Kalmakanda Netrokona",
     "homeGoals": null,
     "awayGoals": null,
     "homePens": null,
@@ -149,55 +93,23 @@ window.MATCHES = [
   },
   {
     "id": "m7",
-    "date": "",
-    "time": "",
-    "venue": "Fulbari, Kalmakanda, Netrakona",
-    "homeGoals": 1,
-    "awayGoals": 1,
-    "homePens": 3,
-    "awayPens": 4,
+    "date": "2026-10-17",
+    "time": "10:00",
+    "venue": "Gobindapur School Field, Kalmakanda Netrokona",
+    "homeGoals": null,
+    "awayGoals": null,
+    "homePens": null,
+    "awayPens": null,
     "scorers": [],
-    "cards": [
-      {
-        "player": "Nunu",
-        "team": "m",
-        "minute": null,
-        "type": "red"
-      },
-      {
-        "player": "Haaland",
-        "team": "m",
-        "minute": null,
-        "type": "red"
-      },
-      {
-        "player": "Rodri",
-        "team": "m",
-        "minute": null,
-        "type": "red"
-      },
-      {
-        "player": "Cr",
-        "team": "n",
-        "minute": 7,
-        "type": "red"
-      },
-      {
-        "player": "Backham",
-        "team": "n",
-        "minute": 10,
-        "type": "red"
-      }
-    ],
+    "cards": [],
     "home": "m",
-    "away": "n",
-    "for": "m|n"
+    "away": "n"
   },
   {
     "id": "m8",
-    "date": "",
-    "time": "",
-    "venue": "",
+    "date": "2026-10-17",
+    "time": "10:40",
+    "venue": "Gobindapur School Field, Kalmakanda Netrokona",
     "homeGoals": null,
     "awayGoals": null,
     "homePens": null,
@@ -205,13 +117,13 @@ window.MATCHES = [
     "scorers": [],
     "cards": [],
     "home": "o",
-    "away": "d"
+    "away": "p"
   },
   {
     "id": "q1",
-    "date": "",
-    "time": "",
-    "venue": "",
+    "date": "2026-10-17",
+    "time": "15:20",
+    "venue": "Gobindapur School Field, Kalmakanda Netrokona",
     "homeGoals": null,
     "awayGoals": null,
     "homePens": null,
@@ -221,22 +133,21 @@ window.MATCHES = [
   },
   {
     "id": "q2",
-    "date": "",
-    "time": "",
-    "venue": "",
-    "homeGoals": 3,
-    "awayGoals": 2,
+    "date": "2026-10-17",
+    "time": "13:00",
+    "venue": "Gobindapur School Field, Kalmakanda Netrokona",
+    "homeGoals": null,
+    "awayGoals": null,
     "homePens": null,
     "awayPens": null,
     "scorers": [],
-    "cards": [],
-    "for": "e|h"
+    "cards": []
   },
   {
     "id": "q3",
-    "date": "",
-    "time": "",
-    "venue": "",
+    "date": "2026-10-17",
+    "time": "13:40",
+    "venue": "Gobindapur School Field, Kalmakanda Netrokona",
     "homeGoals": null,
     "awayGoals": null,
     "homePens": null,
@@ -246,9 +157,9 @@ window.MATCHES = [
   },
   {
     "id": "q4",
-    "date": "",
-    "time": "",
-    "venue": "",
+    "date": "2026-10-17",
+    "time": "14:40",
+    "venue": "Gobindapur School Field, Kalmakanda Netrokona",
     "homeGoals": null,
     "awayGoals": null,
     "homePens": null,
