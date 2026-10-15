@@ -212,7 +212,7 @@ window.TEAMS = [
   {
     "id": "i",
     "name": "Nayankandi FC",
-    "short": "",
+    "short": "NFC",
     "group": "C",
     "players": [
       {
@@ -227,6 +227,150 @@ window.TEAMS = [
         "name": "Gobindo Hajong",
         "jersey": "00",
         "position": "Midfielder",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Kali Hajong",
+        "jersey": "",
+        "position": "Defender",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Prottoy",
+        "jersey": "",
+        "position": "Defender",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Mithu Hajong",
+        "jersey": "",
+        "position": "Midfielder",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Swadhin Hajong",
+        "jersey": "",
+        "position": "Striker",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Nirbet Hajong",
+        "jersey": "",
+        "position": "Forward",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Roni Hajong",
+        "jersey": "",
+        "position": "Striker",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Pritom Hajong",
+        "jersey": "",
+        "position": "Midfielder",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Dulon Hajong",
+        "jersey": "",
+        "position": "Defender",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Opu Hajong",
+        "jersey": "",
+        "position": "Midfielder",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Ashish Hajong",
+        "jersey": "",
+        "position": "Defender",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Ripon Hajong",
+        "jersey": "",
+        "position": "Defender",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Digonto Hajong",
+        "jersey": "",
+        "position": "Defender",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Milon Hajong",
+        "jersey": "",
+        "position": "Midfielder",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Promit Hajong",
+        "jersey": "",
+        "position": "Defender",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Noyon Hajong",
+        "jersey": "",
+        "position": "Defender",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Sajib Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Prokash Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Angkon Hajong",
+        "jersey": "",
+        "position": "",
         "goals": 0,
         "yellow": 0,
         "red": 0
