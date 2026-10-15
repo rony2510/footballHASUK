@@ -10,12 +10,12 @@
 window.TEAMS = [
   {
     "id": "a",
-    "name": "A1",
+    "name": "Gilaghora Hajong FC",
     "short": "",
     "group": "A",
     "players": [],
-    "manager": "",
-    "address": ""
+    "manager": "Shubongkor Hajong",
+    "address": "Gilaghora"
   },
   {
     "id": "b",
