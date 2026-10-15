@@ -13,7 +13,168 @@ window.TEAMS = [
     "name": "Gilaghora Hajong FC",
     "short": "",
     "group": "A",
-    "players": [],
+    "players": [
+      {
+        "name": "Nimai Hajong",
+        "jersey": "23",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Susangkar Hajong",
+        "jersey": "6",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Diponkor Hajong",
+        "jersey": "21",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Ripon Hajong",
+        "jersey": "6",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Bipon Hajong",
+        "jersey": "30",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Durjodon Hajong",
+        "jersey": "12",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Rasib RK Hajong",
+        "jersey": "99",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Chaytonno Hajong",
+        "jersey": "13",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Rikel Hajong",
+        "jersey": "2",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Durjoy Hajong",
+        "jersey": "9",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Liton Hajong",
+        "jersey": "4",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Setu Hajong",
+        "jersey": "2",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Pranto Hajong",
+        "jersey": "10",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Subinoy Hajong",
+        "jersey": "7",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Joy Hajong",
+        "jersey": "11",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Ashinto Hajong",
+        "jersey": "999",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Biplop Hajong",
+        "jersey": "19",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Dulov Hajong",
+        "jersey": "69",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Chitu-Ray",
+        "jersey": "20",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Durjoy Hajong",
+        "jersey": "17",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      }
+    ],
     "manager": "Shubongkor Hajong",
     "address": "Gilaghora, Madhyanagar, Sunamgongj"
   },
