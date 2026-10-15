@@ -572,9 +572,202 @@ window.TEAMS = [
     "name": "Gopalpur FC",
     "short": "",
     "group": "D",
-    "players": [],
-    "manager": "",
-    "address": ""
+    "players": [
+      {
+        "name": "Shovon Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Bipul Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Madhurjo Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Shreejoy Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Durjoy Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Jolonto Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "ShimantoHajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Sunil Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Ojit Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Probonjon Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Otindro Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Kollol Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Chuton Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Gopal Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Hridoy Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Sumon Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Shanto Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Prosenjit Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Debasish Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Khokhon Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Dulon Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Narayan Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Razib Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Mrinmoy Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      }
+    ],
+    "manager": "Digjoy Hajong",
+    "address": "Gopalpur, Durgapur, Netrakona"
   },
   {
     "id": "n",
