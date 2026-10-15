@@ -183,7 +183,120 @@ window.TEAMS = [
     "name": "Guragaw Hajong FC",
     "short": "",
     "group": "A",
-    "players": [],
+    "players": [
+      {
+        "name": "Shipon Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Apon Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Emon Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Nimai Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Digonto Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Shawon Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Shankar Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Shrabon Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Ribu Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Hridoy Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Bivu Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Ujjol Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Osim Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Pollob Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      }
+    ],
     "manager": "Prodip Hajong",
     "address": "Guragaw, Lengura, Kalmakanda"
   },
