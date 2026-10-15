@@ -39,16 +39,15 @@ window.MATCHES = [
     "id": "m3",
     "date": "2026-10-17",
     "time": "11:30",
-    "venue": "",
-    "homeGoals": 1,
-    "awayGoals": 0,
+    "venue": "Gobindapur School Field",
+    "homeGoals": null,
+    "awayGoals": null,
     "homePens": null,
     "awayPens": null,
     "scorers": [],
     "cards": [],
     "home": "e",
-    "away": "f",
-    "for": "e|f"
+    "away": "f"
   },
   {
     "id": "m4",
@@ -253,13 +252,12 @@ window.MATCHES = [
     "date": "",
     "time": "",
     "venue": "",
-    "homeGoals": 3,
-    "awayGoals": 2,
+    "homeGoals": null,
+    "awayGoals": null,
     "homePens": null,
     "awayPens": null,
     "scorers": [],
-    "cards": [],
-    "for": "e|h"
+    "cards": []
   },
   {
     "id": "q3",
