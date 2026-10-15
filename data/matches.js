@@ -53,70 +53,15 @@ window.MATCHES = [
     "id": "m4",
     "date": "2026-10-17",
     "time": "09:30",
-    "venue": "Fulbari, Kalmakanda, Netrakona",
-    "homeGoals": 3,
-    "awayGoals": 5,
+    "venue": "Gobindapur School Field",
+    "homeGoals": null,
+    "awayGoals": null,
     "homePens": null,
     "awayPens": null,
-    "scorers": [
-      {
-        "player": "Messi",
-        "team": "g",
-        "minute": 10
-      },
-      {
-        "player": "Messi",
-        "team": "g",
-        "minute": 10
-      },
-      {
-        "player": "Messi",
-        "team": "g",
-        "minute": 10
-      },
-      {
-        "player": "Ronaldo",
-        "team": "h",
-        "minute": 7
-      },
-      {
-        "player": "Ronaldo",
-        "team": "h",
-        "minute": 7
-      },
-      {
-        "player": "Ronaldo",
-        "team": "h",
-        "minute": 7
-      },
-      {
-        "player": "Ronaldo",
-        "team": "h",
-        "minute": 7
-      },
-      {
-        "player": "Ronaldo",
-        "team": "h",
-        "minute": 7
-      }
-    ],
-    "cards": [
-      {
-        "player": "A",
-        "team": "g",
-        "minute": null,
-        "type": "yellow"
-      },
-      {
-        "player": "B",
-        "team": "h",
-        "minute": null,
-        "type": "yellow"
-      }
-    ],
+    "scorers": [],
+    "cards": [],
     "home": "g",
-    "away": "h",
-    "for": "g|h"
+    "away": "h"
   },
   {
     "id": "m5",
