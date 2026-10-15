@@ -274,7 +274,7 @@ window.TEAMS = [
   },
   {
     "id": "p",
-    "name": "H2",
+    "name": "Defuliyapara FC",
     "short": "P",
     "group": "D",
     "players": [],
