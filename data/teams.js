@@ -193,7 +193,7 @@ window.TEAMS = [
   },
   {
     "id": "g",
-    "name": "D1",
+    "name": "Manikpur FC",
     "short": "",
     "group": "B",
     "players": [],
