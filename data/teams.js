@@ -15,7 +15,7 @@ window.TEAMS = [
     "group": "A",
     "players": [],
     "manager": "Shubongkor Hajong",
-    "address": "Gilaghora"
+    "address": "Gilaghora, Madhyanagar, Sunamgongj"
   },
   {
     "id": "b",
