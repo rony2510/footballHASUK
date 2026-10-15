@@ -67,7 +67,7 @@ window.MATCHES = [
     "id": "m5",
     "date": "2026-10-17",
     "time": "12:30",
-    "venue": "",
+    "venue": "Gobindapur School Field",
     "homeGoals": null,
     "awayGoals": null,
     "homePens": null,
