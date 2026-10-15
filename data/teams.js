@@ -545,8 +545,185 @@ window.TEAMS = [
     "name": "Shomeshwari Hajong FC",
     "short": "",
     "group": "C",
-    "players": [],
-    "manager": "",
+    "players": [
+      {
+        "name": "Sumon Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Bivuti Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Poromeshor Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Samapto Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Nirmol Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Anol Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Prosanto Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Amrito Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Asanto Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Ajoy Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Aditto Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Bishwajit Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Pranto Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Srikanto Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Rimon Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Rittik Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Emon Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Joyanto Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Ratul Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Apurbo Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Supto Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      },
+      {
+        "name": "Ridoy Hajong",
+        "jersey": "",
+        "position": "",
+        "goals": 0,
+        "yellow": 0,
+        "red": 0
+      }
+    ],
+    "manager": "Sumon Hajong",
     "address": ""
   },
   {
