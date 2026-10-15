@@ -211,7 +211,7 @@ window.TEAMS = [
   },
   {
     "id": "i",
-    "name": "E1",
+    "name": "Nayankandi FC",
     "short": "",
     "group": "C",
     "players": [],
